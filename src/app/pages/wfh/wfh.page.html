@@ -1,0 +1,159 @@
+<ion-header>
+   <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+         <ion-menu-button  autoHide="false"></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Work from Home</ion-title>
+   </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+   <ion-card class="animated zoomIn delay-10s">
+      <ion-card-header class="scroll">
+         Work from home for {{wfhForm?.controls?.date?.value | date: 'dd/MM/yyyy'}}
+      </ion-card-header>
+      <ion-card-content>
+         <form [formGroup]="wfhForm">
+            <ion-list>
+
+               <ion-item>
+                  <ion-label>Project</ion-label>
+                  <ion-select formControlName="project_id" placeholder="Select Project" name="project">
+                     <ion-select-option value="f">Widget world</ion-select-option>
+                     <ion-select-option value="m">ProRank</ion-select-option>
+                  </ion-select>
+               </ion-item>
+
+               <!-- for displaying the erroe massage -->
+               <div class="error-messages">
+                  <ng-container *ngFor="let error of error_messages.project_id">
+                     <div class="error-message"
+                          *ngIf="wfhForm.get('project_id').hasError(error.type) && (wfhForm.get('project_id').dirty || wfhForm.get('project_id').touched)">
+                        {{ error.message }}
+                     </div>
+                  </ng-container>
+               </div>
+               <!-- for closeing the erro message -->
+
+               <ion-item>
+                  <ion-label>Billable</ion-label>
+                  <ion-select formControlName="billable" name="billable" placeholder="Select Billable">
+                     <ion-select-option value="f">Yes</ion-select-option>
+                     <ion-select-option value="m">No</ion-select-option>
+                  </ion-select>
+               </ion-item>
+
+               <!-- for displaying the erroe massage -->
+               <div class="error-messages">
+                  <ng-container *ngFor="let error of error_messages.billable">
+                     <div class="error-message"
+                          *ngIf="wfhForm.get('billable').hasError(error.type) && (wfhForm.get('billable').dirty || wfhForm.get('billable').touched)">
+                        {{ error.message }}
+                     </div>
+                  </ng-container>
+               </div>
+               <!-- for closing the erro message -->
+
+                <ion-item>
+                    <ion-label>Date</ion-label>
+                    <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" name="date"
+                                  placeholder="Select Date">
+                    </ion-datetime>
+                </ion-item>
+
+               <!-- for displaying the erroe massage -->
+               <div class="error-messages">
+                  <ng-container *ngFor="let error of error_messages.date">
+                     <div class="error-message"
+                          *ngIf="wfhForm.get('date').hasError(error.type) && (wfhForm.get('date').dirty || wfhForm.get('date').touched)">
+                        {{ error.message }}
+                     </div>
+                  </ng-container>
+               </div>
+               <!-- for closeing the erro message -->
+
+               <ion-item>
+                  <ion-label class="floating" position="floating">From Time</ion-label>
+                  <ion-datetime formControlName="from_time" displayFormat="h:mm a" name="from_time"></ion-datetime>
+               </ion-item>
+
+               <!-- for displaying the erroe massage -->
+               <div class="error-messages">
+                  <ng-container *ngFor="let error of error_messages.from_time">
+                     <div class="error-message"
+                          *ngIf="wfhForm.get('from_time').hasError(error.type) && (wfhForm.get('from_time').dirty || wfhForm.get('from_time').touched)">
+                        {{ error.message }}
+                     </div>
+                  </ng-container>
+               </div>
+               <!-- for closeing the erro message -->
+
+               <ion-item>
+                  <ion-label class="floating" position="floating"> To Time</ion-label>
+                  <ion-datetime formControlName="to_time" displayFormat="h:mm a"></ion-datetime>
+               </ion-item>
+
+               <!-- for displaying the erroe massage -->
+               <div class="error-messages">
+                  <ng-container *ngFor="let error of error_messages.to_time">
+                     <div class="error-message"
+                          *ngIf="wfhForm.get('to_time').hasError(error.type) && (wfhForm.get('to_time').dirty || wfhForm.get('to_time').touched)">
+                        {{ error.message }}
+                     </div>
+                  </ng-container>
+               </div>
+               <!-- for closing the error message -->
+
+               <ion-item>
+                  <ion-label class="floating" position="floating">Reason</ion-label>
+                  <ion-textarea formControlName="reason" placeholder="Enter more information here..."
+                                name="reason">
+                  </ion-textarea>
+               </ion-item>
+
+               <!-- for displaying the erroe massage -->
+               <div class="error-messages">
+                  <ng-container *ngFor="let error of error_messages.reason">
+                     <div class="error-message"
+                          *ngIf="wfhForm.get('reason').hasError(error.type) && (wfhForm.get('reason').dirty || wfhForm.get('reason').touched)">
+                        {{ error.message }}
+                     </div>
+                  </ng-container>
+               </div>
+               <!-- for closing the error message -->
+
+
+            </ion-list>
+
+
+         </form>
+
+      </ion-card-content>
+
+   </ion-card>
+
+   <ion-list class="buttoms">
+      <ion-row>
+         <ion-col col-2>
+            <ion-button class="animated zoomInUp delay-1000s" fill="outline" shape="round" size="default"
+                        (click)="back()">
+               back
+               <ion-icon slot="start" name="arrow-round-back"></ion-icon>
+               <div></div>
+            </ion-button>
+         </ion-col>
+
+         <ion-col col-2>
+            <ion-button class="animated zoomInUp delay-1000s" size="default" [disabled]="!wfhForm.valid"
+                        shape="round" (click)="submit()">
+               Submit
+            </ion-button>
+         </ion-col>
+
+      </ion-row>
+
+   </ion-list>
+
+
+</ion-content>

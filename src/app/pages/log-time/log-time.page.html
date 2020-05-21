@@ -1,0 +1,157 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Log Time</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-card class="animated zoomIn delay-10s">
+    <ion-card-header class="scroll">
+      Time sheet for {{timeSheetForm?.controls?.date?.value | date: 'dd/MM/yyyy'}}
+    </ion-card-header>
+    <ion-card-content *ngIf="timeSheetForm">
+      <form [formGroup]="timeSheetForm">
+        <ion-list>
+
+          <ion-item>
+            <ion-label>Project</ion-label>
+            <ion-select formControlName="project_id" placeholder="Select Project">
+              <ion-select-option value="f">Widget world</ion-select-option>
+              <ion-select-option value="m">ProRank</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+
+          <!-- for displaying the erroe massage -->
+          <div class="error-messages">
+            <ng-container *ngFor="let error of errorMessages.project_id">
+              <div class="error-message"
+                   *ngIf="timeSheetForm.get('project_id').hasError(error.type) && (timeSheetForm.get('project_id').dirty || timeSheetForm.get('project_id').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+          <!-- for closeing the erro message -->
+
+          <ion-item>
+            <ion-label>Activity</ion-label>
+            <ion-select formControlName="activity_id" name="activity_id" placeholder="Select Activity">
+              <ion-select-option value="f">Analytics</ion-select-option>
+              <ion-select-option value="m">Development</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- for displaying the erroe massage -->
+          <div class="error-messages">
+            <ng-container *ngFor="let error of errorMessages.activity_id">
+              <div class="error-message"
+                   *ngIf="timeSheetForm.get('activity_id').hasError(error.type) && (timeSheetForm.get('activity_id').dirty || timeSheetForm.get('activity_id').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+          <!-- for closeing the erro message -->
+
+          <ion-item>
+            <ion-label>Date</ion-label>
+            <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" placeholder="Select Date"></ion-datetime>
+          </ion-item>
+
+          <!-- for displaying the erroe massage -->
+          <div class="error-messages">
+            <ng-container *ngFor="let error of errorMessages.date">
+              <div class="error-message"
+                   *ngIf="timeSheetForm.get('date').hasError(error.type) && (timeSheetForm.get('date').dirty || timeSheetForm.get('date').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+          <!-- for closeing the erro message -->
+
+
+          <ion-item>
+            <ion-label class="floating" position="floating">Worked Hours</ion-label>
+            <ion-input type="text" formControlName="worked_hours"  name="worked_hours">
+            </ion-input>
+          </ion-item>
+
+          <!-- for displaying the erroe massage -->
+          <div class="error-messages">
+            <ng-container *ngFor="let error of errorMessages.worked_hours">
+              <div class="error-message"
+                   *ngIf="timeSheetForm.get('worked_hours').hasError(error.type) && (timeSheetForm.get('worked_hours').dirty || timeSheetForm.get('worked_hours').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+          <!-- for closeing the erro message -->
+
+          <ion-item>
+            <ion-label class="floating" position="floating"> Billed Hours</ion-label>
+            <ion-input type="text" formControlName="billed_hours"  name="billed_hours">
+            </ion-input>
+          </ion-item>
+
+          <!-- for displaying the erroe massage -->
+          <div class="error-messages">
+            <ng-container *ngFor="let error of errorMessages.billed_hours">
+              <div class="error-message"
+                   *ngIf="timeSheetForm.get('billed_hours').hasError(error.type) && (timeSheetForm.get('billed_hours').dirty || timeSheetForm.get('billed_hours').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+          <!-- for closeing the erro message -->
+
+          <ion-item>
+            <ion-label class="floating" position="floating">Comment</ion-label>
+            <ion-textarea formControlName="comment"  placeholder="Enter more information here..." name="comment"></ion-textarea>
+          </ion-item>
+
+          <!-- for displaying the erroe massage -->
+          <div class="error-messages">
+            <ng-container *ngFor="let error of errorMessages.comment">
+              <div class="error-message"
+                   *ngIf="timeSheetForm.get('comment').hasError(error.type) && (timeSheetForm.get('comment').dirty || timeSheetForm.get('comment').touched)">
+                {{ error.message }}
+              </div>
+            </ng-container>
+          </div>
+          <!-- for closeing the erro message -->
+
+        </ion-list>
+
+
+      </form>
+
+    </ion-card-content>
+
+  </ion-card>
+
+  <ion-list class="buttoms">
+    <ion-row>
+      <ion-col col-2>
+        <ion-button class="animated zoomInUp delay-1000s" fill="outline" shape="round" size="default" (click)="back()">
+          back
+          <ion-icon slot="start" name="arrow-round-back"></ion-icon>
+          <div></div>
+        </ion-button>
+      </ion-col>
+
+      <ion-col col-2>
+        <ion-button class="animated zoomInUp delay-1000s" size="default" [disabled]="!timeSheetForm.valid"
+                    shape="round" (click)="submit()">
+          Submit
+        </ion-button>
+      </ion-col>
+
+    </ion-row>
+
+  </ion-list>
+
+
+</ion-content>
