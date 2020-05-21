@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {toastEnter} from 'src/app/toastAnimation/toast';
+import {toastEnter} from '../toastAnimation/toast';
 import {ToastController} from '@ionic/angular';
 
 @Injectable({

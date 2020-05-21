@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ApiService} from '../../core/api.service';
 
 @Component({
   selector: 'app-applied-wfh',
@@ -9,8 +10,11 @@ export class AppliedWfhPage implements OnInit {
 
   notificationData: any;
   date = new Date();
+  appliedWFH = [];
 
-  constructor() { }
+  constructor(
+    private api: ApiService
+  ) { }
 
   ngOnInit() {
     this.notificationData = [
@@ -46,7 +50,8 @@ export class AppliedWfhPage implements OnInit {
       },
 
 
-    ]
+    ];
+
   }
 
 

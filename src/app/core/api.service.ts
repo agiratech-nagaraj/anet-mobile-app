@@ -52,7 +52,7 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('Adding Time Sheet', null)));
   }
 
-  getTimeSheet(pageNo, duration, userId): Observable<TimesheetResponse> {
+  getTimeSheet(pageNo, duration, userId = ''): Observable<TimesheetResponse> {
     const url = `anet-api/timesheets/?page_no=${pageNo}&duration=${duration}&user_id=${userId}`;
     return this.http.get(url)
       .pipe(catchError(this.errorHandler('Getting Time Sheet', null)));
