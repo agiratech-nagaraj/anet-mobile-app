@@ -2,6 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../core/api.service';
 import {AlertService} from '../../core/alert.service';
 import {Timesheet} from '../../core/models/http/responses/timesheet.response';
+import {Observable, of} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import * as appStore from '../../store/reducers';
+import {selectTimesheetsListState} from '../../store/timesheets/selectors/timesheets.selectors';
 
 @Component({
   selector: 'app-time-sheets',
@@ -10,13 +14,14 @@ import {Timesheet} from '../../core/models/http/responses/timesheet.response';
 })
 export class TimeSheetsPage implements OnInit {
 
-  timeSheets: Timesheet[] = [];
+  timeSheets$: Observable<Timesheet[]> = of([]);
   pageNo = 1;
   duration = 'this month';
 
   constructor(
     private api: ApiService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private store: Store<appStore.State>
   ) {
   }
 
@@ -25,16 +30,7 @@ export class TimeSheetsPage implements OnInit {
   }
 
   private loadTimeSheet() {
-
-    this.api.getTimeSheet(this.pageNo, this.duration)
-      .subscribe((res) => {
-        if (res?.success) {
-          this.timeSheets = res?.result?.timesheets ?? [];
-        } else {
-          this.alertService.toastAlert(JSON.stringify(res?.errors ?? 'Something went wrong', null, 2) );
-        }
-      });
-
+    this.timeSheets$ = this.store.pipe(select(selectTimesheetsListState));
   }
 
 }

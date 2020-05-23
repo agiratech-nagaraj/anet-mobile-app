@@ -15,6 +15,8 @@ import {selectUserState} from './store/user/selectors/user.selectors';
 import {loadUsers} from './store/user/actions/user.actions';
 import {StorageKeys, StorageService} from './storage';
 import {SignInResponse} from './core/models/http/responses/sign-in.response';
+import {loadWFHs} from './store/wfh/actions/wfh.actions';
+import {loadTimesheetss} from './store/timesheets/actions/timesheets.actions';
 
 @Component({
   selector: 'app-root',
@@ -36,9 +38,8 @@ export class AppComponent {
   ) {
     this.initializeApp();
     const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
-    this.store.dispatch(loadUsers({data: userData.data}));
+    this.store.dispatch(loadUsers(userData?.data));
     this.userStateListener();
-    this.loadStates();
   }
 
   initializeApp() {
@@ -58,7 +59,7 @@ export class AppComponent {
         localStorage.clear();
         this.resetStates();
         this.islogin = false;
-        this.store.dispatch(loadUsers({data: null}));
+        this.store.dispatch(loadUsers( null));
         this.router.navigateByUrl('/sign_in');
       } else {
         const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
@@ -70,6 +71,8 @@ export class AppComponent {
   private loadStates() {
     this.store.dispatch(loadProjectss());
     this.store.dispatch(loadActivitess());
+    this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true}));
+    this.store.dispatch(loadTimesheetss({pageNo: 1, duration: 'this month'}));
   }
 
   private resetStates() {
@@ -80,6 +83,9 @@ export class AppComponent {
   private userStateListener() {
     this.store.pipe(select(selectUserState)).subscribe((state) => {
       this.islogin = !!state?.data;
+      if (this.islogin) {
+        this.loadStates();
+      }
     });
   }
 

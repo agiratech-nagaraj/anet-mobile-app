@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Observable, of} from 'rxjs';
+
+import {select, Store} from '@ngrx/store';
+
 import {ApiService} from '../../core/api.service';
 import {AlertService} from '../../core/alert.service';
 import {WorkFromHome} from '../../core/models/http/responses/wfh-list.response';
+import * as appStore from '../../store/reducers';
+import {selectWFHListState} from '../../store/wfh/selectors/wfh.selectors';
 
 @Component({
   selector: 'app-applied-wfh',
@@ -10,29 +16,22 @@ import {WorkFromHome} from '../../core/models/http/responses/wfh-list.response';
 })
 export class AppliedWfhPage implements OnInit {
 
-  appliedWFHList: WorkFromHome[] = [];
+  appliedWFHList$: Observable<WorkFromHome[]> = of([]);
   pageNo = 1;
 
   constructor(
     private api: ApiService,
-    private alertService: AlertService
-  ) { }
+    private alertService: AlertService,
+    private store: Store<appStore.State>,
+  ) {
+  }
 
   ngOnInit() {
     this.loadAppliedWFH();
   }
 
   loadAppliedWFH() {
-
-    this.api.getWFHList(this.pageNo, true)
-      .subscribe((res) => {
-        if (res?.result) {
-          this.appliedWFHList = res?.result?.work_from_homes ?? [];
-        } else {
-          this.alertService.toastAlert(res?.errors ?? 'Something went wrong' );
-        }
-      });
-
+    this.appliedWFHList$ = this.store.pipe(select(selectWFHListState));
   }
 
 

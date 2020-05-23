@@ -1,7 +1,7 @@
 <ion-header>
    <ion-toolbar color="primary">
       <ion-buttons slot="start">
-         <ion-menu-button  autoHide="false"></ion-menu-button>
+         <ion-menu-button autoHide="false"></ion-menu-button>
       </ion-buttons>
       <ion-title>Work from Home</ion-title>
    </ion-toolbar>
@@ -20,7 +20,8 @@
                <ion-item>
                   <ion-label>Project</ion-label>
                   <ion-select formControlName="project_id" placeholder="Select Project" name="project">
-                     <ion-select-option *ngFor="let project of projects$ | async" [value]="project?.id">{{project?.name}}</ion-select-option>
+                     <ion-select-option *ngFor="let project of projects$ | async"
+                                        [value]="project?.id">{{project?.name}}</ion-select-option>
                   </ion-select>
                </ion-item>
 
@@ -54,12 +55,12 @@
                </div>
                <!-- for closing the erro message -->
 
-                <ion-item>
-                    <ion-label>Date</ion-label>
-                    <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" name="date"
-                                  placeholder="Select Date">
-                    </ion-datetime>
-                </ion-item>
+               <ion-item>
+                  <ion-label>Date</ion-label>
+                  <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" name="date"
+                                placeholder="Select Date">
+                  </ion-datetime>
+               </ion-item>
 
                <!-- for displaying the erroe massage -->
                <div class="error-messages">
@@ -122,6 +123,17 @@
                </div>
                <!-- for closing the error message -->
 
+               <ion-row>
+
+                  <ion-col>
+                     <ion-button class="animated zoomInUp ion-float-right ion-margin-top delay-1000s" size="default" [disabled]="!wfhForm.valid"
+                                 shape="round" (click)="submit()">
+                        Submit
+                     </ion-button>
+                  </ion-col>
+
+               </ion-row>
+
             </ion-list>
 
          </form>
@@ -129,28 +141,6 @@
       </ion-card-content>
 
    </ion-card>
-
-   <ion-list class="buttoms">
-      <ion-row>
-         <ion-col col-2>
-            <ion-button class="animated zoomInUp delay-1000s" fill="outline" shape="round" size="default"
-                        (click)="back()">
-               back
-               <ion-icon slot="start" name="arrow-round-back"></ion-icon>
-               <div></div>
-            </ion-button>
-         </ion-col>
-
-         <ion-col col-2>
-            <ion-button class="animated zoomInUp delay-1000s" size="default" [disabled]="!wfhForm.valid"
-                        shape="round" (click)="submit()">
-               Submit
-            </ion-button>
-         </ion-col>
-
-      </ion-row>
-
-   </ion-list>
 
 
 </ion-content>

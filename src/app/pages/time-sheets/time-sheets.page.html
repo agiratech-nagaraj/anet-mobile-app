@@ -10,7 +10,7 @@
 <ion-content>
 
   <ion-list>
-    <ion-item *ngFor="let item of timeSheets">
+    <ion-item *ngFor="let item of timeSheets$ | async">
 
       <ion-col size="4">
         <ion-label>

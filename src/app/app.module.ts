@@ -16,6 +16,8 @@ import {AppStoreModule} from './store/store.module';
 import {ProjectsEffects} from './store/projects/effects/projects.effects';
 import {ActivitesEffects} from './store/activites/effects/activites.effects';
 import {UserEffects} from './store/user/effects/user.effects';
+import {WFHEffects} from './store/wfh/effects/wfh.effects';
+import {TimesheetsEffects} from './store/timesheets/effects/timesheets.effects';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import {UserEffects} from './store/user/effects/user.effects';
     EffectsModule.forRoot([
       ProjectsEffects,
       ActivitesEffects,
-      UserEffects
+      UserEffects,
+      WFHEffects,
+      TimesheetsEffects,
     ]),
   ],
   providers: [
