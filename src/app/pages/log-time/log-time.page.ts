@@ -14,6 +14,8 @@ import {selectActivitiesListState} from '../../store/activites/selectors/activit
 import {selectProjectListState} from '../../store/projects/selectors/projects.selectors';
 import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
 import * as activitiesListRes from '../../core/models/http/responses/activities-list.response';
+import {StorageKeys, StorageService} from '../../storage';
+import {TimesheetPayload} from '../../core/models/http/payloads/timesheet.payload';
 
 @Component({
   selector: 'app-log-time',
@@ -49,6 +51,22 @@ export class LogTimePage implements OnInit {
   public projects$: Observable<projectsListRes.Result[]> = of([]);
   public activities$: Observable<activitiesListRes.Result[]> = of([]);
 
+  // tslint:disable-next-line:variable-name
+  private _cacheLogTimePayload: TimesheetPayload;
+
+  private set cacheLogTimePayload(payload: TimesheetPayload) {
+    StorageService.instance.setItem(StorageKeys.lastTimeSheetData, payload, true);
+    this._cacheLogTimePayload = payload;
+  }
+
+  private get cacheLogTimePayload(): TimesheetPayload {
+    if (this._cacheLogTimePayload) {
+      return this._cacheLogTimePayload;
+    }
+    this._cacheLogTimePayload = StorageService.instance.getItem(StorageKeys.lastTimeSheetData, true);
+    return this._cacheLogTimePayload;
+  }
+
 
   constructor(
     public formBuilder: FormBuilder,
@@ -60,27 +78,29 @@ export class LogTimePage implements OnInit {
     private store: Store<appStore.State>,
   ) {
 
+    const lastLogPayload = this.cacheLogTimePayload;
+
     this.timeSheetForm = this.formBuilder.group({
 
-      project_id: new FormControl('', Validators.compose([
+      project_id: new FormControl(lastLogPayload?.project_id ?? '', Validators.compose([
         Validators.required
       ])),
 
-      activity_id: new FormControl('', Validators.compose([
+      activity_id: new FormControl(lastLogPayload?.activity_id ?? '', Validators.compose([
         Validators.required,
       ])),
 
-      worked_hours: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^([0-9]{1,2})$'),
-      ])),
-
-      billed_hours: new FormControl('', Validators.compose([
+      worked_hours: new FormControl(lastLogPayload?.worked_hours ?? '', Validators.compose([
         Validators.required,
         Validators.pattern('^([0-9]{1,2})$'),
       ])),
 
-      comment: new FormControl('', Validators.compose([
+      billed_hours: new FormControl(lastLogPayload?.billed_hours ?? '', Validators.compose([
+        Validators.required,
+        Validators.pattern('^([0-9]{1,2})$'),
+      ])),
+
+      comment: new FormControl(lastLogPayload?.comment ?? '', Validators.compose([
         Validators.required,
       ])),
 
@@ -102,20 +122,17 @@ export class LogTimePage implements OnInit {
       return;
     }
 
+
     this.apiService.addTimeSheet(this.timeSheetForm.value)
       .subscribe(async (res) => {
         if (res?.success) {
+          this.cacheLogTimePayload = this.timeSheetForm.value;
           await this.alertService.toastAlert('Added Successfully', 'Info');
         } else {
           const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
           this.alertService.toastAlert(message);
         }
       });
-  }
-
-
-  back() {
-    this.nav.pop();
   }
 
   private loadStates() {

@@ -7,7 +7,7 @@ export interface WorkFromHome {
   billable: string;
   cc_emails: any[];
   reason: string;
-  account_id: number;
+  account_id?: number;
 }
 
 export interface WFHPayload {

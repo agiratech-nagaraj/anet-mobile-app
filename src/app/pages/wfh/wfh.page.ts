@@ -13,6 +13,9 @@ import {selectProjectListState} from '../../store/projects/selectors/projects.se
 import {selectActivitiesListState} from '../../store/activites/selectors/activites.selectors';
 import {AlertService} from '../../core/alert.service';
 import {ApiService} from '../../core/api.service';
+import {TimesheetPayload} from '../../core/models/http/payloads/timesheet.payload';
+import {StorageKeys, StorageService} from '../../storage';
+import {WFHPayload, WorkFromHome} from '../../core/models/http/payloads/wfh.payload';
 
 @Component({
   selector: 'app-wfh',
@@ -43,10 +46,23 @@ export class WfhPage implements OnInit {
     ],
   };
 
-  public option: string;
   public wfhForm: FormGroup;
   public projects$: Observable<projectsListRes.Result[]> = of([]);
+  // tslint:disable-next-line:variable-name
+  private _cacheWFHPayload: WorkFromHome;
 
+  private set cacheWFHPayload(payload: WorkFromHome) {
+    StorageService.instance.setItem(StorageKeys.lastWFHData, payload, true);
+    this._cacheWFHPayload = payload;
+  }
+
+  private get cacheWFHPayload(): WorkFromHome {
+    if (this._cacheWFHPayload) {
+      return this._cacheWFHPayload;
+    }
+    this._cacheWFHPayload = StorageService.instance.getItem(StorageKeys.lastWFHData, true);
+    return this._cacheWFHPayload;
+  }
 
   constructor(
     public formBuilder: FormBuilder,
@@ -58,26 +74,27 @@ export class WfhPage implements OnInit {
     private apiService: ApiService
   ) {
 
+    const cacheWFHPayload = this.cacheWFHPayload;
     this.wfhForm = this.formBuilder.group({
 
-      project_id: new FormControl('', Validators.compose([
+      project_id: new FormControl(cacheWFHPayload?.project_id ?? '', Validators.compose([
         Validators.required,
       ])),
 
-      billable: new FormControl('', Validators.compose([
+      billable: new FormControl(cacheWFHPayload?.billable ?? '', Validators.compose([
         Validators.required,
       ])),
 
-      from_time: new FormControl('', Validators.compose([
+      from_time: new FormControl(cacheWFHPayload?.from_time ?? '', Validators.compose([
         Validators.required,
       ])),
 
       // for the email requrire
-      to_time: new FormControl('', Validators.compose([
+      to_time: new FormControl(cacheWFHPayload?.to_time ?? '', Validators.compose([
         Validators.required,
       ])),
 
-      reason: new FormControl('', Validators.compose([
+      reason: new FormControl(cacheWFHPayload?.reason ?? '', Validators.compose([
         Validators.required,
       ])),
 
@@ -103,6 +120,7 @@ export class WfhPage implements OnInit {
     this.apiService.addWFH(this.wfhForm.value)
       .subscribe(async (res) => {
         if (res?.success) {
+          this.cacheWFHPayload = this.wfhForm?.value;
           await this.alertService.toastAlert('Added Successfully', 'Info');
         } else {
           const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
@@ -110,10 +128,6 @@ export class WfhPage implements OnInit {
         }
       });
 
-  }
-
-  back() {
-    this.nav.pop();
   }
 
 

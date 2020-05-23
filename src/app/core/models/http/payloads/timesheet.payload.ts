@@ -1,5 +1,5 @@
 export interface TimesheetPayload {
-    account_id: string;
+    account_id?: string;
     project_id: string;
     activity_id: string;
     worked_hours: number;
