@@ -15,6 +15,7 @@ import {Authentication} from '../../core/models/authentication';
 import * as appStore from '../../store/reducers/index';
 import {loadProjectss} from '../../store/projects/actions/projects.actions';
 import {loadActivitess} from '../../store/activites/actions/activites.actions';
+import {loadUsers} from '../../store/user/actions/user.actions';
 
 @Component({
   selector: 'app-sign-in',
@@ -26,7 +27,7 @@ export class SignInPage implements OnInit {
 
   public emailPasswordForm: FormGroup;
 
-  error_messages = {
+  errorMessages = {
     email: [
       {type: 'required', message: 'Email is required.'},
       {type: 'minLength', message: 'Email length must be longer or equal to 6 character.'},
@@ -68,26 +69,39 @@ export class SignInPage implements OnInit {
     this.api.signIn(this.emailPasswordForm.value)
       .subscribe((res: HttpResponse<SignInResponse>) => {
 
+        console.log(res);
+
         if (res.status !== 200) {
           swal('Login', res.statusText, 'error');
           return;
         }
+        if (!!res.body.errors) {
+          swal('Login', JSON.stringify(res?.body?.errors, null, 2), 'error');
+        }
+        this.signInSuccessResHandler(res);
 
-        const auth: Authentication = {} as Authentication;
-        auth.uid = res.headers.get('uid');
-        auth.client = res.headers.get('client');
-        auth['access-token'] = res.headers.get('access-token');
-        StorageService.instance.setItem(StorageKeys.userData, res.body, true);
-        StorageService.instance.setItem(StorageKeys.auth, auth, true);
-        this.router.navigateByUrl('/tabs');
-        this.loadStates();
       });
 
   }
 
-  private loadStates() {
-   this.store.dispatch(loadProjectss());
-   this.store.dispatch(loadActivitess());
+  private signInSuccessResHandler(res: HttpResponse<SignInResponse>) {
+
+    const auth: Authentication = {} as Authentication;
+    auth.uid = res.headers.get('uid');
+    auth.client = res.headers.get('client');
+    auth['access-token'] = res.headers.get('access-token');
+    StorageService.instance.setItem(StorageKeys.auth, auth, true);
+    StorageService.instance.setItem(StorageKeys.userData, res.body, true);
+
+    this.store.dispatch(loadUsers({data: res.body.data}));
+    this.loadStates();
+    this.router.navigateByUrl('/tabs');
+
+  }
+
+  private async loadStates() {
+    this.store.dispatch(loadProjectss());
+    this.store.dispatch(loadActivitess());
   }
 
 

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../core/api.service';
+import {AlertService} from '../../core/alert.service';
+import {WorkFromHome} from '../../core/models/http/responses/wfh-list.response';
 
 @Component({
   selector: 'app-applied-wfh',
@@ -8,49 +10,28 @@ import {ApiService} from '../../core/api.service';
 })
 export class AppliedWfhPage implements OnInit {
 
-  notificationData: any;
-  date = new Date();
-  appliedWFH = [];
+  appliedWFHList: WorkFromHome[] = [];
+  pageNo = 1;
 
   constructor(
-    private api: ApiService
+    private api: ApiService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit() {
-    this.notificationData = [
+    this.loadAppliedWFH();
+  }
 
-      {
-        "name": "Jake Beauliu",
-        "comment": "added a new photo",
-        "time": "2:00 am",
-        "image": "../../assets/chat/user.jpeg",
-      }, {
-        "name": "Abubakar pagas",
-        "comment": "also commented on your post",
-        "time": "2:00 am",
-        "image": "../../assets/chat/user1.jpeg",
-      },
-      {
-        "name": "Lisa Tsjin",
-        "comment": "and 10 others have birthday todays. Wish them the best!",
-        "time": "2:00 am",
-        "image": "../../assets/chat/user3.jpeg",
-      },
-      {
-        "name": "Genalyn Arcojetas",
-        "comment": "also commented on your post",
-        "time": "2:00 am",
-        "image": "../../assets/chat/user2.jpeg",
-      },
-      {
-        "name": "Rehman Sazid",
-        "comment": "also commented on your post",
-        "time": "2:00 am",
-        "image": "../../assets/chat/user4.jpeg",
-      },
+  loadAppliedWFH() {
 
-
-    ];
+    this.api.getWFHList(this.pageNo, true)
+      .subscribe((res) => {
+        if (res?.result) {
+          this.appliedWFHList = res?.result?.work_from_homes ?? [];
+        } else {
+          this.alertService.toastAlert(res?.errors ?? 'Something went wrong' );
+        }
+      });
 
   }
 

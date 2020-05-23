@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {toastEnter} from '../toastAnimation/toast';
+import {toastEnter} from '../shared/animations/toastAnimation/toast';
 import {ToastController} from '@ionic/angular';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class AlertService {
   async toastAlert(msg: string) {
     const toast = await this.toast.create({
       header: 'Error',
-      message: 'Hi, Your password don\'t match',
+      message: msg,
       duration: 400,
       position: 'top',
       enterAnimation: toastEnter,

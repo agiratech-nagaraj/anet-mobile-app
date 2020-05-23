@@ -1,10 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
 import {NavController, ToastController} from '@ionic/angular';
 
-import {toastEnter} from '../../toastAnimation/toast';
+import {toastEnter} from '../../shared/animations/toastAnimation/toast';
+import {Observable, of} from 'rxjs';
+import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
+import {select, Store} from '@ngrx/store';
+import * as appStore from '../../store/reducers';
+import {selectProjectListState} from '../../store/projects/selectors/projects.selectors';
+import {selectActivitiesListState} from '../../store/activites/selectors/activites.selectors';
+import {AlertService} from '../../core/alert.service';
+import {ApiService} from '../../core/api.service';
 
 @Component({
   selector: 'app-wfh',
@@ -14,40 +22,44 @@ import {toastEnter} from '../../toastAnimation/toast';
 export class WfhPage implements OnInit {
 
 
-  error_messages = {
+  errorMessages = {
     project_id: [
-      {type: 'required', message: 'Email is required.'},
+      {type: 'required', message: 'Project is required.'},
       {type: 'pattern', message: 'Please enter a valid project'}
     ],
     billable: [
-      {type: 'required', message: 'password is required.'},
+      {type: 'required', message: 'Billable is required.'},
       {type: 'pattern', message: 'Please enter a valid billable'}
     ],
     date: [
-      {type: 'required', message: 'password is no match.'},
+      {type: 'required', message: 'Date is no match.'},
     ],
     from_time: [
-      {type: 'required', message: 'Email is required.'},
+      {type: 'required', message: 'From time is required.'},
       {type: 'pattern', message: 'Please enter a valid from time'}
     ],
     to_time: [
-      {type: 'required', message: 'password is required.'},
+      {type: 'required', message: 'To time is required.'},
       {type: 'pattern', message: 'Please enter a to time'}
     ],
     reason: [
-      {type: 'required', message: 'password is no match.'},
+      {type: 'required', message: 'Reason is no match.'},
     ],
   };
 
   public option: string;
   public wfhForm: FormGroup;
+  public projects$: Observable<projectsListRes.Result[]> = of([]);
 
 
   constructor(
     public formBuilder: FormBuilder,
     private router: Router,
     private toast: ToastController,
-    private nav: NavController
+    private nav: NavController,
+    private store: Store<appStore.State>,
+    private alertService: AlertService,
+    private apiService: ApiService
   ) {
 
     this.wfhForm = this.formBuilder.group({
@@ -86,30 +98,26 @@ export class WfhPage implements OnInit {
   }
 
   ngOnInit() {
+    this.loadStates();
   }
+
 
   submit() {
-    this.register(this.wfhForm.value);
-  }
 
-  async register(userDetails) {
-    if (userDetails.password !== userDetails.cpassword) {
-      // showing the toast notification
-      this.toastAlert();
-    } else if (userDetails.password == userDetails.cpassword) {
-      this.router.navigateByUrl('/tabs');
+    if (!this.wfhForm.valid) {
+      this.alertService.toastAlert('Enter valid details');
+      return;
     }
-  }
 
-  async toastAlert() {
-    const toast = await this.toast.create({
-      header: 'Error',
-      message: 'Hi, Your password don\'t match',
-      duration: 400,
-      position: 'top',
-      enterAnimation: toastEnter,
-    });
-    toast.present();
+    this.apiService.addWFH(this.wfhForm.value)
+      .subscribe(async (res) => {
+        if (res?.success) {
+          await this.alertService.toastAlert('Added Successfully');
+        } else {
+          const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
+          this.alertService.toastAlert(message);
+        }
+      });
 
   }
 
@@ -117,5 +125,9 @@ export class WfhPage implements OnInit {
     this.nav.pop();
   }
 
+
+  private loadStates() {
+    this.projects$ = this.store.pipe(select(selectProjectListState));
+  }
 
 }

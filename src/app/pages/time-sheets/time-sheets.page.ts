@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../core/api.service';
+import {AlertService} from '../../core/alert.service';
+import {Timesheet} from '../../core/models/http/responses/timesheet.response';
 
 @Component({
   selector: 'app-time-sheets',
@@ -8,55 +10,31 @@ import {ApiService} from '../../core/api.service';
 })
 export class TimeSheetsPage implements OnInit {
 
-  notificationData: any;
-  date = new Date();
-  timeSheets = [];
+  timeSheets: Timesheet[] = [];
+  pageNo = 1;
+  duration = 'this month';
 
   constructor(
-    private api: ApiService
+    private api: ApiService,
+    private alertService: AlertService
   ) {
   }
 
   ngOnInit() {
-    this.notificationData = [
+    this.loadTimeSheet();
+  }
 
-      {
-        'name': 'Jake Beauliu',
-        'comment': 'added a new photo',
-        'time': '2:00 am',
-        'image': '../../assets/chat/user.jpeg',
-      }, {
-        'name': 'Abubakar pagas',
-        'comment': 'also commented on your post',
-        'time': '2:00 am',
-        'image': '../../assets/chat/user1.jpeg',
-      },
-      {
-        'name': 'Lisa Tsjin',
-        'comment': 'and 10 others have birthday todays. Wish them the best!',
-        'time': '2:00 am',
-        'image': '../../assets/chat/user3.jpeg',
-      },
-      {
-        'name': 'Genalyn Arcojetas',
-        'comment': 'also commented on your post',
-        'time': '2:00 am',
-        'image': '../../assets/chat/user2.jpeg',
-      },
-      {
-        'name': 'Rehman Sazid',
-        'comment': 'also commented on your post',
-        'time': '2:00 am',
-        'image': '../../assets/chat/user4.jpeg',
-      },
+  private loadTimeSheet() {
 
-
-    ];
-    this.api.getTimeSheet(0, 'this month')
+    this.api.getTimeSheet(this.pageNo, this.duration)
       .subscribe((res) => {
-        if (res.success) {
-          this.timeSheets = res.result.timesheets;
+        if (res?.success) {
+          this.timeSheets = res?.result?.timesheets ?? [];
+        } else {
+          this.alertService.toastAlert(JSON.stringify(res?.errors ?? 'Something went wrong', null, 2) );
         }
       });
+
   }
+
 }

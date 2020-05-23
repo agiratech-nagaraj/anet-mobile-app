@@ -62,4 +62,5 @@ export interface ProjectsListResponse {
     result: Result[];
     count: number;
     default_projects: number[];
+    errors: any;
 }

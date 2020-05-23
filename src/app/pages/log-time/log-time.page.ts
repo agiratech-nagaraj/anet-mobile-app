@@ -1,11 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {Observable, of} from 'rxjs';
+
+import {select, Store} from '@ngrx/store';
 
 import {NavController, ToastController} from '@ionic/angular';
 
 import {AlertService} from '../../core/alert.service';
 import {ApiService} from '../../core/api.service';
+import * as appStore from '../../store/reducers';
+import {selectActivitiesListState} from '../../store/activites/selectors/activites.selectors';
+import {selectProjectListState} from '../../store/projects/selectors/projects.selectors';
+import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
+import * as activitiesListRes from '../../core/models/http/responses/activities-list.response';
 
 @Component({
   selector: 'app-log-time',
@@ -19,10 +27,10 @@ export class LogTimePage implements OnInit {
       {type: 'required', message: 'Project is required.'},
     ],
     activity_id: [
-      {type: 'required', message: 'Email is required.'},
+      {type: 'required', message: 'Activity is required.'},
     ],
     billed_hours: [
-      {type: 'required', message: 'password is required.'},
+      {type: 'required', message: 'Billing Hours is required.'},
       {type: 'pattern', message: 'Please enter a billing hours'}
     ],
     worked_hours: [
@@ -37,8 +45,9 @@ export class LogTimePage implements OnInit {
     ]
   };
 
-  public option: string;
   public timeSheetForm: FormGroup;
+  public projects$: Observable<projectsListRes.Result[]> = of([]);
+  public activities$: Observable<activitiesListRes.Result[]> = of([]);
 
 
   constructor(
@@ -46,8 +55,9 @@ export class LogTimePage implements OnInit {
     private router: Router,
     private toast: ToastController,
     private nav: NavController,
-    private alert: AlertService,
-    private api: ApiService,
+    private alertService: AlertService,
+    private apiService: ApiService,
+    private store: Store<appStore.State>,
   ) {
 
     this.timeSheetForm = this.formBuilder.group({
@@ -82,25 +92,35 @@ export class LogTimePage implements OnInit {
   }
 
   ngOnInit() {
+    this.loadStates();
   }
 
   async submit() {
 
     if (!this.timeSheetForm.valid) {
-      await this.alert.toastAlert('Enter valid details');
+      await this.alertService.toastAlert('Enter valid details');
       return;
     }
 
-    this.api.addTimeSheet(this.timeSheetForm.value)
+    this.apiService.addTimeSheet(this.timeSheetForm.value)
       .subscribe(async (res) => {
-        if (res.success) {
-          await this.alert.toastAlert('Success');
+        if (res?.success) {
+          await this.alertService.toastAlert('Added Successfully');
+        } else {
+          const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
+          this.alertService.toastAlert(message);
         }
       });
   }
 
+
   back() {
     this.nav.pop();
+  }
+
+  private loadStates() {
+    this.projects$ = this.store.pipe(select(selectProjectListState));
+    this.activities$ = this.store.pipe(select(selectActivitiesListState));
   }
 
 }

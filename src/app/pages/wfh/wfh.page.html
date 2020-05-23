@@ -20,14 +20,13 @@
                <ion-item>
                   <ion-label>Project</ion-label>
                   <ion-select formControlName="project_id" placeholder="Select Project" name="project">
-                     <ion-select-option value="f">Widget world</ion-select-option>
-                     <ion-select-option value="m">ProRank</ion-select-option>
+                     <ion-select-option *ngFor="let project of projects$ | async" [value]="project?.id">{{project?.name}}</ion-select-option>
                   </ion-select>
                </ion-item>
 
                <!-- for displaying the erroe massage -->
                <div class="error-messages">
-                  <ng-container *ngFor="let error of error_messages.project_id">
+                  <ng-container *ngFor="let error of errorMessages.project_id">
                      <div class="error-message"
                           *ngIf="wfhForm.get('project_id').hasError(error.type) && (wfhForm.get('project_id').dirty || wfhForm.get('project_id').touched)">
                         {{ error.message }}
@@ -39,14 +38,14 @@
                <ion-item>
                   <ion-label>Billable</ion-label>
                   <ion-select formControlName="billable" name="billable" placeholder="Select Billable">
-                     <ion-select-option value="f">Yes</ion-select-option>
-                     <ion-select-option value="m">No</ion-select-option>
+                     <ion-select-option value="true">Yes</ion-select-option>
+                     <ion-select-option value="false">No</ion-select-option>
                   </ion-select>
                </ion-item>
 
                <!-- for displaying the erroe massage -->
                <div class="error-messages">
-                  <ng-container *ngFor="let error of error_messages.billable">
+                  <ng-container *ngFor="let error of errorMessages.billable">
                      <div class="error-message"
                           *ngIf="wfhForm.get('billable').hasError(error.type) && (wfhForm.get('billable').dirty || wfhForm.get('billable').touched)">
                         {{ error.message }}
@@ -64,7 +63,7 @@
 
                <!-- for displaying the erroe massage -->
                <div class="error-messages">
-                  <ng-container *ngFor="let error of error_messages.date">
+                  <ng-container *ngFor="let error of errorMessages.date">
                      <div class="error-message"
                           *ngIf="wfhForm.get('date').hasError(error.type) && (wfhForm.get('date').dirty || wfhForm.get('date').touched)">
                         {{ error.message }}
@@ -80,7 +79,7 @@
 
                <!-- for displaying the erroe massage -->
                <div class="error-messages">
-                  <ng-container *ngFor="let error of error_messages.from_time">
+                  <ng-container *ngFor="let error of errorMessages.from_time">
                      <div class="error-message"
                           *ngIf="wfhForm.get('from_time').hasError(error.type) && (wfhForm.get('from_time').dirty || wfhForm.get('from_time').touched)">
                         {{ error.message }}
@@ -96,7 +95,7 @@
 
                <!-- for displaying the erroe massage -->
                <div class="error-messages">
-                  <ng-container *ngFor="let error of error_messages.to_time">
+                  <ng-container *ngFor="let error of errorMessages.to_time">
                      <div class="error-message"
                           *ngIf="wfhForm.get('to_time').hasError(error.type) && (wfhForm.get('to_time').dirty || wfhForm.get('to_time').touched)">
                         {{ error.message }}
@@ -114,7 +113,7 @@
 
                <!-- for displaying the erroe massage -->
                <div class="error-messages">
-                  <ng-container *ngFor="let error of error_messages.reason">
+                  <ng-container *ngFor="let error of errorMessages.reason">
                      <div class="error-message"
                           *ngIf="wfhForm.get('reason').hasError(error.type) && (wfhForm.get('reason').dirty || wfhForm.get('reason').touched)">
                         {{ error.message }}
@@ -123,9 +122,7 @@
                </div>
                <!-- for closing the error message -->
 
-
             </ion-list>
-
 
          </form>
 

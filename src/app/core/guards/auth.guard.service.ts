@@ -20,11 +20,21 @@ export class AuthGuardService implements CanActivate, CanLoad {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return !!StorageService.instance.getItem(StorageKeys.auth) || true;
+    const isLoggined = StorageService.instance.getItem(StorageKeys.auth);
+    if (!!isLoggined) {
+      return true;
+    }
+    this.router.navigateByUrl('/sign-in');
+    return  false;
   }
 
   canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
-    return !!StorageService.instance.getItem(StorageKeys.auth);
+    const isLoggined = StorageService.instance.getItem(StorageKeys.auth);
+    if (!!isLoggined) {
+      return true;
+    }
+    this.router.navigateByUrl('/sign-in');
+    return  false;
   }
 
 }

@@ -17,7 +17,6 @@ import {AppStoreModule} from './store/store.module';
 
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [],
   imports: [
     AppRoutingModule,
     BrowserModule,

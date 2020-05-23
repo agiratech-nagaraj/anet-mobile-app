@@ -8,4 +8,5 @@ export interface Result {
 export interface ActivitiesListResponse {
     success: boolean;
     result: Result[];
+    errors: any;
 }

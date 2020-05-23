@@ -7,6 +7,6 @@ describe('Projects Selectors', () => {
       [fromProjects.projectsFeatureKey]: {}
     });
 
-    expect(result).toEqual({});
+    expect(result).toEqual({} as  fromProjects.State);
   });
 });

@@ -43,7 +43,7 @@ export interface Department2 {
     name: string;
 }
 
-export interface Data {
+export interface User {
     id: number;
     name: string;
     email: string;
@@ -66,5 +66,6 @@ export interface Data {
 }
 
 export interface SignInResponse {
-    data: Data;
+    data: User;
+    errors: any;
 }

@@ -20,8 +20,7 @@
           <ion-item>
             <ion-label>Project</ion-label>
             <ion-select formControlName="project_id" placeholder="Select Project">
-              <ion-select-option value="f">Widget world</ion-select-option>
-              <ion-select-option value="m">ProRank</ion-select-option>
+              <ion-select-option *ngFor="let project of projects$ | async" [value]="project?.id">{{project?.name}}</ion-select-option>
             </ion-select>
           </ion-item>
 
@@ -40,8 +39,7 @@
           <ion-item>
             <ion-label>Activity</ion-label>
             <ion-select formControlName="activity_id" name="activity_id" placeholder="Select Activity">
-              <ion-select-option value="f">Analytics</ion-select-option>
-              <ion-select-option value="m">Development</ion-select-option>
+              <ion-select-option *ngFor="let activity of activities$ | async" [value]="activity?.id">{{activity?.name}}</ion-select-option>
             </ion-select>
           </ion-item>
 
@@ -71,7 +69,6 @@
             </ng-container>
           </div>
           <!-- for closeing the erro message -->
-
 
           <ion-item>
             <ion-label class="floating" position="floating">Worked Hours</ion-label>

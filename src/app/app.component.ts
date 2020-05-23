@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {Router} from '@angular/router';
 
 import {Platform} from '@ionic/angular';
@@ -10,7 +10,9 @@ import {clearProjects, loadProjectss} from './store/projects/actions/projects.ac
 import {clearActivities, loadActivitess} from './store/activites/actions/activites.actions';
 import * as appStore from './store/reducers';
 import {ApiService} from './core/api.service';
-import {StorageKeys, StorageService} from './storage';
+import {AlertService} from './core/alert.service';
+import {selectUserState} from './store/user/selectors/user.selectors';
+import {loadUsers} from './store/user/actions/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -27,10 +29,11 @@ export class AppComponent {
     private statusBar: StatusBar,
     private store: Store<appStore.State>,
     private router: Router,
-    private api: ApiService
+    private api: ApiService,
+    private alertService: AlertService,
   ) {
     this.initializeApp();
-    this.islogin = !!StorageService.instance.getItem(StorageKeys.auth);
+    this.userStateListener();
   }
 
   initializeApp() {
@@ -46,10 +49,15 @@ export class AppComponent {
 
   signOut() {
     this.api.signOut().subscribe((res) => {
-      if (res.success) {
+      if (res?.success) {
         localStorage.clear();
         this.resetStates();
+        this.islogin = false;
+        this.store.dispatch(loadUsers({data: null}));
         this.router.navigateByUrl('/sign_in');
+      } else {
+        const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
+        this.alertService.toastAlert(message);
       }
     });
   }
@@ -62,6 +70,12 @@ export class AppComponent {
   private resetStates() {
     this.store.dispatch(clearProjects());
     this.store.dispatch(clearActivities());
+  }
+
+  private userStateListener() {
+    this.store.pipe(select(selectUserState)).subscribe((state) => {
+      this.islogin = !!state?.data;
+    });
   }
 
 }
