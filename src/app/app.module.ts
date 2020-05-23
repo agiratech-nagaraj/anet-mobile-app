@@ -13,6 +13,9 @@ import { AppRoutingModule } from './app-routing.module';
 import {StorageModule} from './storage/storage.module';
 import {CoreModule} from './core/core.module';
 import {AppStoreModule} from './store/store.module';
+import {ProjectsEffects} from './store/projects/effects/projects.effects';
+import {ActivitesEffects} from './store/activites/effects/activites.effects';
+import {UserEffects} from './store/user/effects/user.effects';
 
 
 @NgModule({
@@ -25,7 +28,11 @@ import {AppStoreModule} from './store/store.module';
     StorageModule,
     CoreModule,
     AppStoreModule,
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([
+      ProjectsEffects,
+      ActivitesEffects,
+      UserEffects
+    ]),
   ],
   providers: [
     StatusBar,

@@ -13,6 +13,8 @@ import {ApiService} from './core/api.service';
 import {AlertService} from './core/alert.service';
 import {selectUserState} from './store/user/selectors/user.selectors';
 import {loadUsers} from './store/user/actions/user.actions';
+import {StorageKeys, StorageService} from './storage';
+import {SignInResponse} from './core/models/http/responses/sign-in.response';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +35,8 @@ export class AppComponent {
     private alertService: AlertService,
   ) {
     this.initializeApp();
+    const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
+    this.store.dispatch(loadUsers({data: userData.data}));
     this.userStateListener();
   }
 

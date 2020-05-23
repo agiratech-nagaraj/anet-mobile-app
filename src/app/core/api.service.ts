@@ -59,7 +59,7 @@ export class ApiService {
   }
 
   addTimeSheet(payload: TimesheetPayload): Observable<TimesheetResponse> {
-    return this.http.post('anet-api/', payload)
+    return this.http.post('anet-api/timesheets', payload)
       .pipe(catchError(this.errorHandler('Adding Time Sheet', null)));
   }
 

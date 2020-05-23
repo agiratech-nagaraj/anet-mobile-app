@@ -25,22 +25,18 @@ export class WfhPage implements OnInit {
   errorMessages = {
     project_id: [
       {type: 'required', message: 'Project is required.'},
-      {type: 'pattern', message: 'Please enter a valid project'}
     ],
     billable: [
       {type: 'required', message: 'Billable is required.'},
-      {type: 'pattern', message: 'Please enter a valid billable'}
     ],
     date: [
       {type: 'required', message: 'Date is no match.'},
     ],
     from_time: [
       {type: 'required', message: 'From time is required.'},
-      {type: 'pattern', message: 'Please enter a valid from time'}
     ],
     to_time: [
       {type: 'required', message: 'To time is required.'},
-      {type: 'pattern', message: 'Please enter a to time'}
     ],
     reason: [
       {type: 'required', message: 'Reason is no match.'},
@@ -70,24 +66,19 @@ export class WfhPage implements OnInit {
 
       billable: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.pattern('^(yes|no)$'),
       ])),
 
       from_time: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.pattern('^([0-9]{1,2}:[0-9]{1,2}(am|pm))$'),
       ])),
 
       // for the email requrire
       to_time: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.minLength(1),
-        Validators.pattern('^([0-9]{1,2})$'),
       ])),
 
       reason: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.minLength(2)
       ])),
 
       date: new FormControl(new Date().toString(), Validators.compose([
