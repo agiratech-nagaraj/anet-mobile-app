@@ -103,7 +103,7 @@ export class WfhPage implements OnInit {
     this.apiService.addWFH(this.wfhForm.value)
       .subscribe(async (res) => {
         if (res?.success) {
-          await this.alertService.toastAlert('Added Successfully');
+          await this.alertService.toastAlert('Added Successfully', 'Info');
         } else {
           const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
           this.alertService.toastAlert(message);

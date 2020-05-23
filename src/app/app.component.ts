@@ -38,6 +38,7 @@ export class AppComponent {
     const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
     this.store.dispatch(loadUsers({data: userData.data}));
     this.userStateListener();
+    this.loadStates();
   }
 
   initializeApp() {

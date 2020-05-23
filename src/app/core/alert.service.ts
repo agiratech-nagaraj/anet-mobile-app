@@ -11,9 +11,9 @@ export class AlertService {
     private toast: ToastController,
   ) { }
 
-  async toastAlert(msg: string) {
+  async toastAlert(msg: string, type= 'Error') {
     const toast = await this.toast.create({
-      header: 'Error',
+      header: type,
       message: msg,
       duration: 400,
       position: 'top',

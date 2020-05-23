@@ -59,6 +59,9 @@ export class ApiService {
   }
 
   addTimeSheet(payload: TimesheetPayload): Observable<TimesheetResponse> {
+    const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
+    const userId = user?.data?.id;
+    payload = {...payload, account_id: userId.toString()};
     return this.http.post('anet-api/timesheets', payload)
       .pipe(catchError(this.errorHandler('Adding Time Sheet', null)));
   }
@@ -76,7 +79,7 @@ export class ApiService {
     const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
     const userId = user?.data?.id as number;
     // tslint:disable-next-line:variable-name
-    const work_from_home = {...payload, account_id: userId};
+    const work_from_home = {...payload, account_id: userId, permission_type: 'work_from_home' };
     return this.http.post<WFHResponse>(url, {work_from_home})
       .pipe(catchError(this.errorHandler('Add WFH', null)));
   }

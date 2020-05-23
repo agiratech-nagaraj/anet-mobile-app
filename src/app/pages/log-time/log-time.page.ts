@@ -105,7 +105,7 @@ export class LogTimePage implements OnInit {
     this.apiService.addTimeSheet(this.timeSheetForm.value)
       .subscribe(async (res) => {
         if (res?.success) {
-          await this.alertService.toastAlert('Added Successfully');
+          await this.alertService.toastAlert('Added Successfully', 'Info');
         } else {
           const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
           this.alertService.toastAlert(message);
