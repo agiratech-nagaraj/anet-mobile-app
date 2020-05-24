@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {LoadingController, Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
+import {AndroidFullScreen} from '@ionic-native/android-full-screen/ngx';
 
 import {clearProjects, loadProjectss} from './store/projects/actions/projects.actions';
 import {clearActivities, loadActivitess} from './store/activites/actions/activites.actions';
@@ -35,7 +36,8 @@ export class AppComponent {
     private router: Router,
     private api: ApiService,
     private alertService: AlertService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    public androidFullScreen: AndroidFullScreen,
   ) {
     this.initializeApp();
     const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
@@ -47,6 +49,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.backgroundColorByHexString('#208590');
       this.splashScreen.hide();
+      this.switchToFullScreen();
     });
   }
 
@@ -92,6 +95,14 @@ export class AppComponent {
         this.loadStates();
       }
     });
+  }
+
+  switchToFullScreen() {
+    this.androidFullScreen.isImmersiveModeSupported()
+      .then(() => {
+        this.androidFullScreen.immersiveMode();
+      })
+      .catch(err => console.log(err));
   }
 
 }

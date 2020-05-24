@@ -7,6 +7,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import {AndroidFullScreen} from '@ionic-native/android-full-screen/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -41,6 +42,7 @@ import {TimesheetsEffects} from './store/timesheets/effects/timesheets.effects';
   providers: [
     StatusBar,
     SplashScreen,
+    AndroidFullScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
