@@ -19,5 +19,6 @@ export const reducer = createReducer(
   on(TimesheetsActions.loadTimesheetss, state => state),
   on(TimesheetsActions.loadTimesheetssSuccess, (state, action) => ({...state, data: action.data})),
   on(TimesheetsActions.loadTimesheetssFailure, (state, action) => ({...state, error: action.error})),
+  on(TimesheetsActions.clearTimesheets, (state, action) => ({data: null, error: null})),
 );
 

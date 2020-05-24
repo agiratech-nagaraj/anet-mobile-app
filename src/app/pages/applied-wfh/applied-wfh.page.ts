@@ -8,6 +8,8 @@ import {AlertService} from '../../core/alert.service';
 import {WorkFromHome} from '../../core/models/http/responses/wfh-list.response';
 import * as appStore from '../../store/reducers';
 import {selectWFHListState} from '../../store/wfh/selectors/wfh.selectors';
+import {loadTimesheetss} from "../../store/timesheets/actions/timesheets.actions";
+import {loadWFHs} from "../../store/wfh/actions/wfh.actions";
 
 @Component({
   selector: 'app-applied-wfh',
@@ -34,5 +36,11 @@ export class AppliedWfhPage implements OnInit {
     this.appliedWFHList$ = this.store.pipe(select(selectWFHListState));
   }
 
+  reload(event) {
+    this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true}));
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
+  }
 
 }

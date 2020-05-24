@@ -15,8 +15,8 @@ import {selectUserState} from './store/user/selectors/user.selectors';
 import {loadUsers} from './store/user/actions/user.actions';
 import {StorageKeys, StorageService} from './storage';
 import {SignInResponse} from './core/models/http/responses/sign-in.response';
-import {loadWFHs} from './store/wfh/actions/wfh.actions';
-import {loadTimesheetss} from './store/timesheets/actions/timesheets.actions';
+import {clearWFH, loadWFHs} from './store/wfh/actions/wfh.actions';
+import {clearTimesheets, loadTimesheetss} from './store/timesheets/actions/timesheets.actions';
 
 @Component({
   selector: 'app-root',
@@ -37,15 +37,15 @@ export class AppComponent {
     private alertService: AlertService,
   ) {
     this.initializeApp();
-    const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
-    this.store.dispatch(loadUsers(userData?.data));
-    this.userStateListener();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.backgroundColorByHexString('#208590');
       this.splashScreen.hide();
+      const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
+      this.store.dispatch(loadUsers({data: userData?.data}));
+      this.userStateListener();
     });
   }
 
@@ -59,8 +59,7 @@ export class AppComponent {
         localStorage.clear();
         this.resetStates();
         this.islogin = false;
-        this.store.dispatch(loadUsers( null));
-        this.router.navigateByUrl('/sign_in');
+        this.router.navigateByUrl('/sign-in');
       } else {
         const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
         this.alertService.toastAlert(message);
@@ -69,6 +68,7 @@ export class AppComponent {
   }
 
   private loadStates() {
+    this.store.dispatch(loadUsers( {data: null} ));
     this.store.dispatch(loadProjectss());
     this.store.dispatch(loadActivitess());
     this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true}));
@@ -78,6 +78,8 @@ export class AppComponent {
   private resetStates() {
     this.store.dispatch(clearProjects());
     this.store.dispatch(clearActivities());
+    this.store.dispatch(clearTimesheets());
+    this.store.dispatch(clearWFH());
   }
 
   private userStateListener() {

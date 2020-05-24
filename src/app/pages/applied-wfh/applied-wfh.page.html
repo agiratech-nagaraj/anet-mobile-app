@@ -8,6 +8,16 @@
 </ion-header>
 
 <ion-content>
+
+  <div class="ion-padding">
+    <ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+      <ion-refresher-content pullingIcon="arrow-dropdown"
+                             refreshingSpinner="circles" refreshing-text="Refreshing...">
+
+      </ion-refresher-content>
+    </ion-refresher>
+  </div>
+
   <ion-list>
     <ion-item *ngFor="let item of appliedWFHList$ | async">
 

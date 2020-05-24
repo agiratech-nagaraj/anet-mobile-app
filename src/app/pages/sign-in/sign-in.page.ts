@@ -93,7 +93,7 @@ export class SignInPage implements OnInit {
     StorageService.instance.setItem(StorageKeys.auth, auth, true);
     StorageService.instance.setItem(StorageKeys.userData, res.body, true);
 
-    this.store.dispatch(loadUsers(res?.body?.data));
+    this.store.dispatch(loadUsers({data: res?.body?.data}));
     this.loadStates();
     this.router.navigateByUrl('/tabs');
 

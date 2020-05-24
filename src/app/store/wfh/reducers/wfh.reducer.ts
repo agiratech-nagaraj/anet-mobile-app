@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
+
 import * as WFHActions from '../actions/wfh.actions';
-import {WFHResponse} from '../../../core/models/http/responses/wfh.response';
 import {WFHListResponse} from '../../../core/models/http/responses/wfh-list.response';
 
 export const wFHFeatureKey = 'wFH';
@@ -21,6 +21,7 @@ export const reducer = createReducer(
   on(WFHActions.loadWFHs, state => state),
   on(WFHActions.loadWFHsSuccess, (state, action) => ({...state, data: action.data})),
   on(WFHActions.loadWFHsFailure, (state, action) => ({...state, error: action.error})),
+  on(WFHActions.clearWFH, (state, action) => ({data: null, error: null})),
 
 );
 

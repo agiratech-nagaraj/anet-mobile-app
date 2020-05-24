@@ -14,3 +14,8 @@ export const loadTimesheetssFailure = createAction(
   '[Timesheets] Load Timesheetss Failure',
   props<{ error: any }>()
 );
+
+export const clearTimesheets = createAction(
+    '[Timesheets] clear Timesheets '
+);
+

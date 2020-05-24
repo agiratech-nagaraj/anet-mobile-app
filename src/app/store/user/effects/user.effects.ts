@@ -12,7 +12,7 @@ export class UserEffects {
   loadUsers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(UserActions.loadUsers),
-      map(data => UserActions.loadUsersSuccess({data})),
+      map(action => UserActions.loadUsersSuccess({data: action.data})),
       catchError(error => of(UserActions.loadUsersFailure({error}))));
   });
 

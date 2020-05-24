@@ -12,7 +12,7 @@
 ion-card {
   padding-top: 10px;
   border-radius: 10px;
-  margin-top: 33%;
+  margin-top: 34px;
   border: 1px solid var(--ion-color-primary);
   border-radius: 13px !important;
 }
@@ -122,4 +122,10 @@ h2 {
 
 .container{
   position: relative;
+}
+
+.logo-section{
+  width: 50%;
+  margin: auto;
+  margin-top: 32px;
 }

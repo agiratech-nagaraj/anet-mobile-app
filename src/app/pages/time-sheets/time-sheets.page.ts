@@ -6,31 +6,38 @@ import {Observable, of} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import * as appStore from '../../store/reducers';
 import {selectTimesheetsListState} from '../../store/timesheets/selectors/timesheets.selectors';
+import {loadTimesheetss} from "../../store/timesheets/actions/timesheets.actions";
 
 @Component({
-  selector: 'app-time-sheets',
-  templateUrl: './time-sheets.page.html',
-  styleUrls: ['./time-sheets.page.scss'],
+    selector: 'app-time-sheets',
+    templateUrl: './time-sheets.page.html',
+    styleUrls: ['./time-sheets.page.scss'],
 })
 export class TimeSheetsPage implements OnInit {
 
-  timeSheets$: Observable<Timesheet[]> = of([]);
-  pageNo = 1;
-  duration = 'this month';
+    timeSheets$: Observable<Timesheet[]> = of([]);
+    pageNo = 1;
+    duration = 'this month';
 
-  constructor(
-    private api: ApiService,
-    private alertService: AlertService,
-    private store: Store<appStore.State>
-  ) {
-  }
+    constructor(
+        private api: ApiService,
+        private alertService: AlertService,
+        private store: Store<appStore.State>
+    ) {
+    }
 
-  ngOnInit() {
-    this.loadTimeSheet();
-  }
+    ngOnInit() {
+        this.loadTimeSheet();
+    }
 
-  private loadTimeSheet() {
-    this.timeSheets$ = this.store.pipe(select(selectTimesheetsListState));
-  }
+    private loadTimeSheet() {
+        this.timeSheets$ = this.store.pipe(select(selectTimesheetsListState));
+    }
 
+    reload(event) {
+      this.store.dispatch(loadTimesheetss({pageNo: 1, duration: 'this month'}));
+        setTimeout(() => {
+          event.target.complete();
+        }, 1000);
+    }
 }

@@ -1,13 +1,24 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-menu-button autoHide="false"></ion-menu-button>
+      <ion-menu-toggle autoHide="false">
+        <ion-img src="assets/menu.svg"></ion-img>
+      </ion-menu-toggle>
     </ion-buttons>
     <ion-title>Time Sheets</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <div class="ion-padding">
+    <ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+      <ion-refresher-content pullingIcon="arrow-dropdown"
+                           refreshingSpinner="circles" refreshing-text="Refreshing...">
+
+      </ion-refresher-content>
+    </ion-refresher>
+  </div>
 
   <ion-list>
     <ion-item *ngFor="let item of timeSheets$ | async">

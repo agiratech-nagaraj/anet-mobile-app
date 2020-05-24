@@ -14,3 +14,7 @@ export const loadWFHsFailure = createAction(
   '[WFH] Load WFHs Failure',
   props<{ error: any }>()
 );
+
+export const clearWFH = createAction(
+    '[WFH] clear WFH '
+);

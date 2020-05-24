@@ -1,9 +1,10 @@
 import { createAction, props } from '@ngrx/store';
+
 import {User} from '../../../core/models/http/responses/sign-in.response';
 
 export const loadUsers = createAction(
   '[User] Load Users',
-  props<User>()
+  props<{data: User}>()
 );
 
 export const loadUsersSuccess = createAction(
