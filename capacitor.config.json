@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "anet-mobile-app",
+  "appId": "com.agiratect.anet",
+  "appName": "Anet",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

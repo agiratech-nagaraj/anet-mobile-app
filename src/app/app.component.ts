@@ -36,7 +36,6 @@ export class AppComponent {
     private router: Router,
     private api: ApiService,
     private alertService: AlertService,
-    public loadingController: LoadingController,
     public androidFullScreen: AndroidFullScreen,
   ) {
     this.initializeApp();
@@ -49,7 +48,6 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.backgroundColorByHexString('#208590');
       this.splashScreen.hide();
-      this.switchToFullScreen();
     });
   }
 
