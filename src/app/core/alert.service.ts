@@ -19,7 +19,7 @@ export class AlertService {
       message: msg,
       duration: 400,
       position: 'top',
-      enterAnimation: toastEnter,
+      // enterAnimation: toastEnter,
     });
     toast.present();
     return  toast;

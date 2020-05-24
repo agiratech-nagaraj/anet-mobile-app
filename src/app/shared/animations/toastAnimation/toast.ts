@@ -1,7 +1,6 @@
 
-import { Animation } from '@ionic/core'
 
-export function toastEnter(AnimationC: Animation, baseEl: ShadowRoot, position: string): Promise<Animation> {
+export function toastEnter(AnimationC: any, baseEl: ShadowRoot, position: string): Promise<Animation> {
   const baseAnimation = new AnimationC();
 
   const wrapperAnimation = new AnimationC();

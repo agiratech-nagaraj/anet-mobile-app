@@ -4,7 +4,7 @@ Un official Anet mobile application
   
 ## Built on
     1. Angular 9
-    2. Ionic 4
+    2. Ionic 5
     3. NGRX 9
 
 
