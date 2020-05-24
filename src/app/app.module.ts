@@ -21,6 +21,7 @@ import {WFHEffects} from './store/wfh/effects/wfh.effects';
 import {TimesheetsEffects} from './store/timesheets/effects/timesheets.effects';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import {DatePipe} from "@angular/common";
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { environment } from '../environments/environment';
     StatusBar,
     SplashScreen,
     AndroidFullScreen,
+    DatePipe,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -16,6 +16,7 @@ import {ApiService} from '../../core/api.service';
 import {TimesheetPayload} from '../../core/models/http/payloads/timesheet.payload';
 import {StorageKeys, StorageService} from '../../storage';
 import {WFHPayload, WorkFromHome} from '../../core/models/http/payloads/wfh.payload';
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-wfh',
@@ -71,7 +72,8 @@ export class WfhPage implements OnInit {
     private nav: NavController,
     private store: Store<appStore.State>,
     private alertService: AlertService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private datePipe: DatePipe
   ) {
 
     const cacheWFHPayload = this.cacheWFHPayload;
@@ -85,12 +87,12 @@ export class WfhPage implements OnInit {
         Validators.required,
       ])),
 
-      from_time: new FormControl(cacheWFHPayload?.from_time ?? '', Validators.compose([
+      from_time: new FormControl(cacheWFHPayload?.from_time ?? '10:00 am', Validators.compose([
         Validators.required,
       ])),
 
       // for the email requrire
-      to_time: new FormControl(cacheWFHPayload?.to_time ?? '', Validators.compose([
+      to_time: new FormControl(cacheWFHPayload?.to_time ?? '08:00 pm', Validators.compose([
         Validators.required,
       ])),
 
@@ -119,7 +121,10 @@ export class WfhPage implements OnInit {
 
     const loaderRef = await this.alertService.presentLoading();
 
-    this.apiService.addWFH(this.wfhForm.value)
+    let payload = {...this.wfhForm.value};
+    const date = this.datePipe.transform(new Date(payload.date), 'yyyy-MM-dd');
+    payload = {...payload, date };
+    this.apiService.addWFH(payload)
       .subscribe(async (res) => {
         loaderRef.dismiss();
         if (res?.success) {
