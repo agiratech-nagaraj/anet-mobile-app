@@ -16,3 +16,7 @@ export const loadUsersFailure = createAction(
   '[User] Load Users Failure',
   props<{ error: any }>()
 );
+
+export const clearUsers = createAction(
+    '[User] clear User '
+);

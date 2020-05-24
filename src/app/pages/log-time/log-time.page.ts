@@ -122,9 +122,11 @@ export class LogTimePage implements OnInit {
       return;
     }
 
+    const loaderRef = await this.alertService.presentLoading();
 
     this.apiService.addTimeSheet(this.timeSheetForm.value)
       .subscribe(async (res) => {
+        loaderRef.dismiss();
         if (res?.success) {
           this.cacheLogTimePayload = this.timeSheetForm.value;
           await this.alertService.toastAlert('Added Successfully', 'Info');

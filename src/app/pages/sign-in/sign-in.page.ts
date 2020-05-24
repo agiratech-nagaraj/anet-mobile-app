@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {HttpResponse} from '@angular/common/http';
 import swal from 'sweetalert2';
 
-import {NavController} from '@ionic/angular';
+import {IonInput, NavController} from '@ionic/angular';
 
 import {Store} from '@ngrx/store';
 
@@ -16,6 +16,7 @@ import * as appStore from '../../store/reducers/index';
 import {loadProjectss} from '../../store/projects/actions/projects.actions';
 import {loadActivitess} from '../../store/activites/actions/activites.actions';
 import {loadUsers} from '../../store/user/actions/user.actions';
+import {AlertService} from '../../core/alert.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -48,7 +49,8 @@ export class SignInPage implements OnInit {
     private router: Router,
     private nav: NavController,
     private api: ApiService,
-    private store: Store<appStore.State>
+    private store: Store<appStore.State>,
+    private alertService: AlertService
   ) {
     this.emailPasswordForm = this.formBuilder.group({
       password: new FormControl('', Validators.compose([
@@ -64,12 +66,16 @@ export class SignInPage implements OnInit {
 
   }
 
-  login() {
+  showPassword(passowrdInputEl: IonInput) {
+    passowrdInputEl.type = passowrdInputEl.type === 'password' ? 'text' : 'password';
+  }
 
+  async login() {
+
+    const loaderRef = await this.alertService.presentLoading();
     this.api.signIn(this.emailPasswordForm.value)
       .subscribe((res: HttpResponse<SignInResponse>) => {
-
-        console.log(res);
+        loaderRef.dismiss();
 
         if (res.status !== 200) {
           swal('Login', res.statusText, 'error');

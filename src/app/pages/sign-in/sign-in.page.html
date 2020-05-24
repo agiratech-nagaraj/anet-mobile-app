@@ -16,7 +16,7 @@
             <ion-list>
                <ion-item>
                   <ion-label class="floating" position="floating">Email Address</ion-label>
-                  <ion-input type="email" formControlName="email" name="email"></ion-input>
+                  <ion-input autocorrect="on" autocomplete autofocus="on" clearInput="true" clearOnEdit="true" type="email" formControlName="email" name="email"></ion-input>
                </ion-item>
                <!-- for displaying the erroe massage -->
                <div class="error-messages">
@@ -28,10 +28,13 @@
                   </ng-container>
                </div>
                <!-- for closeing the erro message -->
+
                <ion-item>
                   <ion-label class="floating" position="floating">Password</ion-label>
-                  <ion-input type="password" formControlName="password" name="password"></ion-input>
+                  <ion-input type="password" #passowrdInputEl formControlName="password" name="password"></ion-input>
+                  <ion-icon (click)="showPassword(passowrdInputEl)" name="eye" color="primary" slot="end" align-self-center></ion-icon>
                </ion-item>
+
                <!-- for displaying the erroe massage -->
                <div class="error-messages">
                   <ng-container *ngFor="let error of errorMessages.password">

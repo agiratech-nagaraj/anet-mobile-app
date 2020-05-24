@@ -110,15 +110,18 @@ export class WfhPage implements OnInit {
   }
 
 
-  submit() {
+  async submit() {
 
     if (!this.wfhForm.valid) {
       this.alertService.toastAlert('Enter valid details');
       return;
     }
 
+    const loaderRef = await this.alertService.presentLoading();
+
     this.apiService.addWFH(this.wfhForm.value)
       .subscribe(async (res) => {
+        loaderRef.dismiss();
         if (res?.success) {
           this.cacheWFHPayload = this.wfhForm?.value;
           await this.alertService.toastAlert('Added Successfully', 'Info');

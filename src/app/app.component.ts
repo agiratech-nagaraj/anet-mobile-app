@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Router} from '@angular/router';
 
-import {Platform} from '@ionic/angular';
+import {LoadingController, Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 
@@ -12,7 +12,7 @@ import * as appStore from './store/reducers';
 import {ApiService} from './core/api.service';
 import {AlertService} from './core/alert.service';
 import {selectUserState} from './store/user/selectors/user.selectors';
-import {loadUsers} from './store/user/actions/user.actions';
+import {clearUsers, loadUsers} from './store/user/actions/user.actions';
 import {StorageKeys, StorageService} from './storage';
 import {SignInResponse} from './core/models/http/responses/sign-in.response';
 import {clearWFH, loadWFHs} from './store/wfh/actions/wfh.actions';
@@ -35,17 +35,18 @@ export class AppComponent {
     private router: Router,
     private api: ApiService,
     private alertService: AlertService,
+    public loadingController: LoadingController
   ) {
     this.initializeApp();
+    const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
+    this.store.dispatch(loadUsers({data: userData?.data}));
+    this.userStateListener();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.backgroundColorByHexString('#208590');
       this.splashScreen.hide();
-      const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
-      this.store.dispatch(loadUsers({data: userData?.data}));
-      this.userStateListener();
     });
   }
 
@@ -53,8 +54,10 @@ export class AppComponent {
     this.loadStates();
   }
 
-  signOut() {
+  async signOut() {
+    const loaderRef = await this.alertService.presentLoading();
     this.api.signOut().subscribe((res) => {
+      loaderRef.dismiss();
       if (res?.success) {
         localStorage.clear();
         this.resetStates();
@@ -68,7 +71,6 @@ export class AppComponent {
   }
 
   private loadStates() {
-    this.store.dispatch(loadUsers( {data: null} ));
     this.store.dispatch(loadProjectss());
     this.store.dispatch(loadActivitess());
     this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true}));
@@ -80,6 +82,7 @@ export class AppComponent {
     this.store.dispatch(clearActivities());
     this.store.dispatch(clearTimesheets());
     this.store.dispatch(clearWFH());
+    this.store.dispatch(clearUsers());
   }
 
   private userStateListener() {
