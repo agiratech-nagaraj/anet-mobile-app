@@ -1,5 +1,7 @@
 {
   "name": "anet-mobile-app",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
