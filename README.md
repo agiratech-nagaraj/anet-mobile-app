@@ -13,11 +13,11 @@
 ### Screenshots
 
 <Rows>
-  <img src="screenshot/sign-in.jpeg" height="300em" />
-  <img src="screenshot/menu.jpeg" height="300em" />
-  <img src="screenshot/log-time.jpeg" height="300em" />
-  <img src="screenshot/wfh.jpeg" height="300em" />
-  <img src="screenshot/timesheets.jpeg" height="300em" />
-  <img src="screenshot/popup.jpeg" height="300em" />
-  <img src="screenshot/applied-wfh.jpeg" height="300em" />
+  <img src="screenshots/sign-in.jpeg" height="300em" />
+  <img src="screenshots/menu.jpeg" height="300em" />
+  <img src="screenshots/log-time.jpeg" height="300em" />
+  <img src="screenshots/wfh.jpeg" height="300em" />
+  <img src="screenshots/timesheets.jpeg" height="300em" />
+  <img src="screenshots/popup.jpeg" height="300em" />
+  <img src="screenshots/applied-wfh.jpeg" height="300em" />
 <Rows/>
