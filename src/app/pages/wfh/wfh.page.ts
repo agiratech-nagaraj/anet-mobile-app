@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {NavController, ToastController} from '@ionic/angular';
 
@@ -16,7 +16,9 @@ import {ApiService} from '../../core/api.service';
 import {TimesheetPayload} from '../../core/models/http/payloads/timesheet.payload';
 import {StorageKeys, StorageService} from '../../storage';
 import {WFHPayload, WorkFromHome} from '../../core/models/http/payloads/wfh.payload';
-import {DatePipe} from "@angular/common";
+import {DatePipe} from '@angular/common';
+import * as wfhList from '../../core/models/http/responses/wfh-list.response';
+
 
 @Component({
   selector: 'app-wfh',
@@ -65,6 +67,8 @@ export class WfhPage implements OnInit {
     return this._cacheWFHPayload;
   }
 
+  selectedWFH: wfhList.WorkFromHome;
+
   constructor(
     public formBuilder: FormBuilder,
     private router: Router,
@@ -73,42 +77,48 @@ export class WfhPage implements OnInit {
     private store: Store<appStore.State>,
     private alertService: AlertService,
     private apiService: ApiService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private route: ActivatedRoute
   ) {
 
-    const cacheWFHPayload = this.cacheWFHPayload;
+  }
+
+  ngOnInit(): void {
+    const updateData = history.state?.data;
+    this.selectedWFH = updateData as wfhList.WorkFromHome;
+    const initialData = updateData || this.cacheWFHPayload;
     this.wfhForm = this.formBuilder.group({
 
-      project_id: new FormControl(cacheWFHPayload?.project_id ?? '', Validators.compose([
+      project_id: new FormControl(initialData?.project_id ?? '', Validators.compose([
         Validators.required,
       ])),
 
-      billable: new FormControl(cacheWFHPayload?.billable ?? '', Validators.compose([
+      billable: new FormControl(initialData?.billable ?? '', Validators.compose([
         Validators.required,
       ])),
 
-      from_time: new FormControl(cacheWFHPayload?.from_time ?? '10:00 am', Validators.compose([
+      from_time: new FormControl(initialData?.from_time ?? '10:00', Validators.compose([
         Validators.required,
       ])),
 
       // for the email requrire
-      to_time: new FormControl(cacheWFHPayload?.to_time ?? '08:00 pm', Validators.compose([
+      to_time: new FormControl(initialData?.to_time ?? '20:00', Validators.compose([
         Validators.required,
       ])),
 
-      reason: new FormControl(cacheWFHPayload?.reason ?? '', Validators.compose([
+      reason: new FormControl(initialData?.reason ?? '', Validators.compose([
         Validators.required,
       ])),
 
-      date: new FormControl(new Date().toString(), Validators.compose([
+      date: new FormControl(this.selectedWFH ? initialData?.date : new Date().toString(), Validators.compose([
         Validators.required
       ]))
     });
-
+    this.loadStates();
   }
 
-  ngOnInit() {
-    this.loadStates();
+  ionViewWillEnter() {
+
   }
 
 
@@ -123,7 +133,21 @@ export class WfhPage implements OnInit {
 
     let payload = {...this.wfhForm.value};
     const date = this.datePipe.transform(new Date(payload.date), 'yyyy-MM-dd');
-    payload = {...payload, date };
+    payload = {...payload, date};
+    if (this.selectedWFH) {
+      this.updateWFH(payload, loaderRef);
+    } else {
+      this.addWFH(payload, loaderRef);
+    }
+
+  }
+
+
+  private loadStates() {
+    this.projects$ = this.store.pipe(select(selectProjectListState));
+  }
+
+  private addWFH(payload, loaderRef) {
     this.apiService.addWFH(payload)
       .subscribe(async (res) => {
         loaderRef.dismiss();
@@ -135,12 +159,22 @@ export class WfhPage implements OnInit {
           this.alertService.toastAlert(message);
         }
       });
-
   }
 
-
-  private loadStates() {
-    this.projects$ = this.store.pipe(select(selectProjectListState));
+  private updateWFH(payload, loaderRef) {
+    this.apiService.updateAppliedWFH(this.selectedWFH.id, payload)
+      .subscribe(async (res) => {
+        loaderRef.dismiss();
+        if (res?.success) {
+          await this.alertService.toastAlert('Added Successfully', 'Info');
+          this.wfhForm.reset();
+          this.selectedWFH = null;
+          history.state.data = null;
+        } else {
+          const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
+          this.alertService.toastAlert(message);
+        }
+      });
   }
 
 }

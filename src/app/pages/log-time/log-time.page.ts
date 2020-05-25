@@ -16,6 +16,7 @@ import * as projectsListRes from '../../core/models/http/responses/projects-list
 import * as activitiesListRes from '../../core/models/http/responses/activities-list.response';
 import {StorageKeys, StorageService} from '../../storage';
 import {TimesheetPayload} from '../../core/models/http/payloads/timesheet.payload';
+import {Timesheet} from '../../core/models/http/responses/timesheet.response';
 
 @Component({
   selector: 'app-log-time',
@@ -67,6 +68,8 @@ export class LogTimePage implements OnInit {
     return this._cacheLogTimePayload;
   }
 
+  selectedTimeSheet: Timesheet;
+
 
   constructor(
     public formBuilder: FormBuilder,
@@ -78,7 +81,13 @@ export class LogTimePage implements OnInit {
     private store: Store<appStore.State>,
   ) {
 
-    const lastLogPayload = this.cacheLogTimePayload;
+  }
+
+  ngOnInit(): void {
+    this.loadStates();
+    const updateData = history.state?.data;
+    this.selectedTimeSheet = updateData;
+    const lastLogPayload = updateData || this.cacheLogTimePayload;
 
     this.timeSheetForm = this.formBuilder.group({
 
@@ -90,7 +99,7 @@ export class LogTimePage implements OnInit {
         Validators.required,
       ])),
 
-      worked_hours: new FormControl(lastLogPayload?.worked_hours ?? '', Validators.compose([
+      worked_hours: new FormControl(lastLogPayload?.worked_hours ?? '8', Validators.compose([
         Validators.required,
         Validators.pattern('^([0-9]{1,2})$'),
       ])),
@@ -104,15 +113,13 @@ export class LogTimePage implements OnInit {
         Validators.required,
       ])),
 
-      date: new FormControl(new Date().toString(), Validators.compose([
+      date: new FormControl(updateData?.date ?? new Date().toString(), Validators.compose([
         Validators.required
       ]))
     });
-
   }
 
-  ngOnInit() {
-    this.loadStates();
+  ionViewWillEnter() {
   }
 
   async submit() {
@@ -124,7 +131,21 @@ export class LogTimePage implements OnInit {
 
     const loaderRef = await this.alertService.presentLoading();
 
-    this.apiService.addTimeSheet(this.timeSheetForm.value)
+    if (this.selectedTimeSheet) {
+      this.updateTimeSheet(this.timeSheetForm?.value, loaderRef);
+    } else {
+      this.addTimeSheet(this.timeSheetForm?.value, loaderRef);
+    }
+
+  }
+
+  private loadStates() {
+    this.projects$ = this.store.pipe(select(selectProjectListState));
+    this.activities$ = this.store.pipe(select(selectActivitiesListState));
+  }
+
+  private addTimeSheet(payload, loaderRef) {
+    this.apiService.addTimeSheet(payload)
       .subscribe(async (res) => {
         loaderRef.dismiss();
         if (res?.success) {
@@ -137,9 +158,20 @@ export class LogTimePage implements OnInit {
       });
   }
 
-  private loadStates() {
-    this.projects$ = this.store.pipe(select(selectProjectListState));
-    this.activities$ = this.store.pipe(select(selectActivitiesListState));
+  private updateTimeSheet(payload, loaderRef) {
+    this.apiService.updateTimeSheet(this.selectedTimeSheet?.id, payload)
+      .subscribe(async (res) => {
+        loaderRef.dismiss();
+        if (res?.success) {
+          this.selectedTimeSheet = null;
+          history.state.data = null;
+          this.timeSheetForm.reset();
+          await this.alertService.toastAlert(res?.message, 'Info');
+        } else {
+          const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
+          this.alertService.toastAlert(message);
+        }
+      });
   }
 
 }

@@ -91,13 +91,13 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('WFH List', null)));
   }
 
-  getAppliedWFH(id: string) {
+  getAppliedWFH(id: number) {
     const url = `anet-api/work_from_homes/${id}`;
     return this.http.get(url)
       .pipe(catchError(this.errorHandler('get Applied WFH', null)));
   }
 
-  updateAppliedWFH(id: string, payload: WorkFromHome) {
+  updateAppliedWFH(id: number, payload: WorkFromHome) {
 
     const url = `anet-api/work_from_homes/${id}`;
     const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
@@ -109,19 +109,19 @@ export class ApiService {
 
   }
 
-  deleteAppliedWFH(id: string) {
+  deleteAppliedWFH(id: number) {
     const url = `anet-api/work_from_homes/${id}`;
     return this.http.delete(url)
       .pipe(catchError(this.errorHandler('Delete Applied WFH', null)));
   }
 
-  getTimeSheet(id: string) {
+  getTimeSheet(id: number) {
     const url = `anet-api/timesheets/${id}`;
     return this.http.get(url)
       .pipe(catchError(this.errorHandler('Get Timesheet', null)));
   }
 
-  updateTimeSheet(id: string, payload: TimesheetPayload) {
+  updateTimeSheet(id: number, payload: TimesheetPayload) {
     const url = `anet-api/timesheets/${id}`;
     const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
     const userId = user?.data?.id;
@@ -130,7 +130,7 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('Update Timesheet', null)));
   }
 
-  deleteTimeSheet(id: string) {
+  deleteTimeSheet(id: number) {
     const url = `anet-api/timesheets/${id}`;
     return this.http.delete(url)
       .pipe(catchError(this.errorHandler('Delete Timesheet', null)));
