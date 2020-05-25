@@ -16,7 +16,7 @@ export class TimesheetsEffects {
 
       ofType(TimesheetsActions.loadTimesheetss),
       concatMap((action) =>
-        this.apiService.getTimeSheet(action.pageNo, action.duration).pipe(
+        this.apiService.getTimeSheets(action.pageNo, action.duration).pipe(
           map(data => TimesheetsActions.loadTimesheetssSuccess({ data })),
           catchError(error => of(TimesheetsActions.loadTimesheetssFailure({ error }))))
       )

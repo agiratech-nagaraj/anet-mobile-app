@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
+import {DatePipe} from '@angular/common';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -19,9 +21,6 @@ import {ActivitesEffects} from './store/activites/effects/activites.effects';
 import {UserEffects} from './store/user/effects/user.effects';
 import {WFHEffects} from './store/wfh/effects/wfh.effects';
 import {TimesheetsEffects} from './store/timesheets/effects/timesheets.effects';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
-import {DatePipe} from "@angular/common";
 
 
 @NgModule({
@@ -41,7 +40,7 @@ import {DatePipe} from "@angular/common";
       WFHEffects,
       TimesheetsEffects,
     ]),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', {  enabled: false, registrationStrategy: 'registerImmediately' }),
   ],
   providers: [
     StatusBar,

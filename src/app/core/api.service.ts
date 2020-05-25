@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import swal from 'sweetalert2';
 import {catchError} from 'rxjs/operators';
 
 
@@ -11,7 +10,7 @@ import {ActivitiesListResponse} from './models/http/responses/activities-list.re
 import {ProjectsListResponse} from './models/http/responses/projects-list.response';
 import {TimesheetPayload} from './models/http/payloads/timesheet.payload';
 import {TimesheetResponse} from './models/http/responses/timesheet.response';
-import { WorkFromHome} from './models/http/payloads/wfh.payload';
+import {WorkFromHome} from './models/http/payloads/wfh.payload';
 import {WFHResponse} from './models/http/responses/wfh.response';
 import {WFHListResponse} from './models/http/responses/wfh-list.response';
 import {StorageKeys, StorageService} from '../storage';
@@ -34,13 +33,15 @@ export class ApiService {
       const errorMessage = (error.error instanceof ErrorEvent) ?
         error.error.message : `server returned code ${error.status} with body "${JSON.stringify(error.error)}"`;
 
-      this.alertService.toastAlert(errorMessage);
+      this.alertService.toastAlert(errorMessage, operationName);
       return of({errors: errorMessage, data: defaultData});
     };
   }
 
   signIn(paylaod: SignInPayload) {
-    return this.http.post('anet-api/accounts/sign_in', paylaod, {observe: 'response' as 'body'});
+    return this.http.post('anet-api/accounts/sign_in', paylaod, {observe: 'response'}).pipe(
+      catchError(err => of(err))
+    );
   }
 
   signOut(): Observable<SignOutResponse> {
@@ -66,7 +67,7 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('Adding Time Sheet', null)));
   }
 
-  getTimeSheet(pageNo = 1, duration = 'this month'): Observable<TimesheetResponse> {
+  getTimeSheets(pageNo = 1, duration = 'this month'): Observable<TimesheetResponse> {
     const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
     const userId = user?.data?.id;
     const url = `anet-api/timesheets/?page_no=${pageNo}&duration=${duration}&user_id=${userId}`;
@@ -79,7 +80,7 @@ export class ApiService {
     const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
     const userId = user?.data?.id as number;
     // tslint:disable-next-line:variable-name
-    const work_from_home = {...payload, account_id: userId, permission_type: 'work_from_home' };
+    const work_from_home = {...payload, account_id: userId, permission_type: 'work_from_home'};
     return this.http.post<WFHResponse>(url, {work_from_home})
       .pipe(catchError(this.errorHandler('Add WFH', null)));
   }
@@ -88,6 +89,51 @@ export class ApiService {
     const url = `anet-api/work_from_homes?self=true&filter=true&page_no=${pageNo}&this_month=${thisMonth}`;
     return this.http.get<WFHListResponse>(url)
       .pipe(catchError(this.errorHandler('WFH List', null)));
+  }
+
+  getAppliedWFH(id: string) {
+    const url = `anet-api/work_from_homes/${id}`;
+    return this.http.get(url)
+      .pipe(catchError(this.errorHandler('get Applied WFH', null)));
+  }
+
+  updateAppliedWFH(id: string, payload: WorkFromHome) {
+
+    const url = `anet-api/work_from_homes/${id}`;
+    const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
+    const userId = user?.data?.id as number;
+    // tslint:disable-next-line:variable-name
+    const work_from_home = {...payload, account_id: userId, permission_type: 'work_from_home'};
+    return this.http.put(url, {work_from_home})
+      .pipe(catchError(this.errorHandler('Update Applied WFH', null)));
+
+  }
+
+  deleteAppliedWFH(id: string) {
+    const url = `anet-api/work_from_homes/${id}`;
+    return this.http.delete(url)
+      .pipe(catchError(this.errorHandler('Delete Applied WFH', null)));
+  }
+
+  getTimeSheet(id: string) {
+    const url = `anet-api/timesheets/${id}`;
+    return this.http.get(url)
+      .pipe(catchError(this.errorHandler('Get Timesheet', null)));
+  }
+
+  updateTimeSheet(id: string, payload: TimesheetPayload) {
+    const url = `anet-api/timesheets/${id}`;
+    const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
+    const userId = user?.data?.id;
+    payload = {...payload, account_id: userId.toString()};
+    return this.http.put(url, payload)
+      .pipe(catchError(this.errorHandler('Update Timesheet', null)));
+  }
+
+  deleteTimeSheet(id: string) {
+    const url = `anet-api/timesheets/${id}`;
+    return this.http.delete(url)
+      .pipe(catchError(this.errorHandler('Delete Timesheet', null)));
   }
 
 }

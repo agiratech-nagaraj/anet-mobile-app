@@ -1,7 +1,7 @@
 {
   "name": "anet-mobile-app",
   "short_name": "anet",
-  "theme_color": "#208590",
+  "theme_color": "#3c8dbc",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

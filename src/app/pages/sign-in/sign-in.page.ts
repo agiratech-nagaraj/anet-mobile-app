@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {HttpResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import swal from 'sweetalert2';
 
 import {IonInput, NavController} from '@ionic/angular';
@@ -74,17 +74,26 @@ export class SignInPage implements OnInit {
 
     const loaderRef = await this.alertService.presentLoading();
     this.api.signIn(this.emailPasswordForm.value)
-      .subscribe((res: HttpResponse<SignInResponse>) => {
+      .subscribe((res: HttpResponse<SignInResponse> | HttpErrorResponse) => {
+
         loaderRef.dismiss();
 
-        if (res.status !== 200) {
-          swal('Login', res.statusText, 'error');
+        if (res.status === 401) {
+          this.alertService.toastAlert((res as HttpErrorResponse)?.error?.errors?.[0] ?? 'Something went wrong');
           return;
         }
-        if (!!res.body.errors) {
-          swal('Login', JSON.stringify(res?.body?.errors, null, 2), 'error');
+
+        if (res.status === 0 ) {
+          this.alertService.toastAlert('May be Network failed!');
+          return;
         }
-        this.signInSuccessResHandler(res);
+
+        if (res.status >= 500 ) {
+          this.alertService.toastAlert('Something went wrong!');
+          return;
+        }
+
+        this.signInSuccessResHandler(res as HttpResponse<SignInResponse>);
 
       });
 
