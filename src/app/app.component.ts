@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Router} from '@angular/router';
 
-import {LoadingController, Platform} from '@ionic/angular';
+import { Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {AndroidFullScreen} from '@ionic-native/android-full-screen/ngx';
@@ -18,6 +18,7 @@ import {StorageKeys, StorageService} from './storage';
 import {SignInResponse} from './core/models/http/responses/sign-in.response';
 import {clearWFH, loadWFHs} from './store/wfh/actions/wfh.actions';
 import {clearTimesheets, loadTimesheetss} from './store/timesheets/actions/timesheets.actions';
+import {AuthService} from "./core/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -37,6 +38,7 @@ export class AppComponent {
     private api: ApiService,
     private alertService: AlertService,
     public androidFullScreen: AndroidFullScreen,
+    private authService: AuthService
   ) {
     this.initializeApp();
     const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
@@ -60,8 +62,7 @@ export class AppComponent {
     this.api.signOut().subscribe((res) => {
       loaderRef.dismiss();
       if (res?.success) {
-        localStorage.clear();
-        this.resetStates();
+        this.authService.clearSessionState();
         this.islogin = false;
         this.router.navigateByUrl('/sign-in');
       } else {
@@ -78,13 +79,6 @@ export class AppComponent {
     this.store.dispatch(loadTimesheetss({pageNo: 1, duration: 'this month'}));
   }
 
-  private resetStates() {
-    this.store.dispatch(clearProjects());
-    this.store.dispatch(clearActivities());
-    this.store.dispatch(clearTimesheets());
-    this.store.dispatch(clearWFH());
-    this.store.dispatch(clearUsers());
-  }
 
   private userStateListener() {
     this.store.pipe(select(selectUserState)).subscribe((state) => {

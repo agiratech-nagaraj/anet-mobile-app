@@ -4,18 +4,15 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {NavController, ToastController} from '@ionic/angular';
 
-import {toastEnter} from '../../shared/animations/toastAnimation/toast';
 import {Observable, of} from 'rxjs';
 import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
 import {select, Store} from '@ngrx/store';
 import * as appStore from '../../store/reducers';
 import {selectProjectListState} from '../../store/projects/selectors/projects.selectors';
-import {selectActivitiesListState} from '../../store/activites/selectors/activites.selectors';
 import {AlertService} from '../../core/alert.service';
 import {ApiService} from '../../core/api.service';
-import {TimesheetPayload} from '../../core/models/http/payloads/timesheet.payload';
 import {StorageKeys, StorageService} from '../../storage';
-import {WFHPayload, WorkFromHome} from '../../core/models/http/payloads/wfh.payload';
+import { WorkFromHome} from '../../core/models/http/payloads/wfh.payload';
 import {DatePipe} from '@angular/common';
 import * as wfhList from '../../core/models/http/responses/wfh-list.response';
 
@@ -84,6 +81,9 @@ export class WfhPage implements OnInit {
   }
 
   ngOnInit(): void {
+
+    console.log('on-init-history', history.state?.data);
+
     const updateData = history.state?.data;
     this.selectedWFH = updateData as wfhList.WorkFromHome;
     const initialData = updateData || this.cacheWFHPayload;
@@ -93,7 +93,7 @@ export class WfhPage implements OnInit {
         Validators.required,
       ])),
 
-      billable: new FormControl(initialData?.billable ?? '', Validators.compose([
+      billable: new FormControl(initialData?.billable.toString() ?? '', Validators.compose([
         Validators.required,
       ])),
 
@@ -118,9 +118,8 @@ export class WfhPage implements OnInit {
   }
 
   ionViewWillEnter() {
-
+    this.setFormForUpdateWFH();
   }
-
 
   async submit() {
 
@@ -175,6 +174,22 @@ export class WfhPage implements OnInit {
           this.alertService.toastAlert(message);
         }
       });
+  }
+
+  private setFormForUpdateWFH() {
+    const updateData = history.state?.data;
+    if (!updateData || this.selectedWFH) {
+      return;
+    }
+    this.selectedWFH = updateData as wfhList.WorkFromHome;
+    console.log('selected wfh', updateData);
+    this.wfhForm.reset();
+    this.wfhForm.controls.project_id.setValue(this.selectedWFH?.project_id);
+    this.wfhForm.controls.date.setValue(this.selectedWFH?.date);
+    this.wfhForm.controls.from_time.setValue(this.selectedWFH?.from_time);
+    this.wfhForm.controls.to_time.setValue(this.selectedWFH?.to_time);
+    this.wfhForm.controls.reason.setValue(this.selectedWFH?.reason);
+    this.wfhForm.controls.billable.setValue(this.selectedWFH?.billable?.toString());
   }
 
 }

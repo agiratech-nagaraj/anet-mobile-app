@@ -120,6 +120,7 @@ export class LogTimePage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.setFormForUpdateLogTime();
   }
 
   async submit() {
@@ -174,4 +175,22 @@ export class LogTimePage implements OnInit {
       });
   }
 
+
+  private setFormForUpdateLogTime() {
+
+    const updateData = history.state?.data;
+    if (!updateData || this.selectedTimeSheet) {
+      return;
+    }
+    this.selectedTimeSheet = updateData;
+    console.log('selected time sheet', updateData);
+    this.timeSheetForm.reset();
+    this.timeSheetForm.controls.project_id.setValue(this.selectedTimeSheet?.project?.id);
+    this.timeSheetForm.controls.activity_id.setValue(this.selectedTimeSheet?.activity?.id);
+    this.timeSheetForm.controls.date.setValue(this.selectedTimeSheet?.date);
+    this.timeSheetForm.controls.comment.setValue(this.selectedTimeSheet?.comment);
+    this.timeSheetForm.controls.billed_hours.setValue(this.selectedTimeSheet?.billed_hours);
+    this.timeSheetForm.controls.worked_hours.setValue(this.selectedTimeSheet?.worked_hours);
+
+  }
 }
