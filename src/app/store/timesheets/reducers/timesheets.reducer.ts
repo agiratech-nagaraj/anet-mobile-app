@@ -1,11 +1,11 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import * as TimesheetsActions from '../actions/timesheets.actions';
-import {TimesheetResponse} from '../../../core/models/http/responses/timesheet.response';
+import {TimesheetsResponse} from '../../../core/models/http/responses/timesheets.response';
 
 export const timesheetsFeatureKey = 'timesheets';
 
 export interface State {
-  data: TimesheetResponse;
+  data: TimesheetsResponse;
 }
 
 export const initialState: State = {

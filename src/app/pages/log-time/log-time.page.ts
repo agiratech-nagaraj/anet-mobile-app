@@ -16,7 +16,7 @@ import * as projectsListRes from '../../core/models/http/responses/projects-list
 import * as activitiesListRes from '../../core/models/http/responses/activities-list.response';
 import {StorageKeys, StorageService} from '../../storage';
 import {TimesheetPayload} from '../../core/models/http/payloads/timesheet.payload';
-import {Timesheet} from '../../core/models/http/responses/timesheet.response';
+import {Timesheet} from '../../core/models/http/responses/timesheets.response';
 
 @Component({
   selector: 'app-log-time',
@@ -91,11 +91,11 @@ export class LogTimePage implements OnInit {
 
     this.timeSheetForm = this.formBuilder.group({
 
-      project_id: new FormControl(lastLogPayload?.project_id ?? '', Validators.compose([
+      project_id: new FormControl(lastLogPayload?.project?.id || lastLogPayload?.project_id || '', Validators.compose([
         Validators.required
       ])),
 
-      activity_id: new FormControl(lastLogPayload?.activity_id ?? '', Validators.compose([
+      activity_id: new FormControl(lastLogPayload?.activity?.id  || lastLogPayload?.activity_id || '', Validators.compose([
         Validators.required,
       ])),
 
@@ -183,7 +183,6 @@ export class LogTimePage implements OnInit {
       return;
     }
     this.selectedTimeSheet = updateData;
-    console.log('selected time sheet', updateData);
     this.timeSheetForm.reset();
     this.timeSheetForm.controls.project_id.setValue(this.selectedTimeSheet?.project?.id);
     this.timeSheetForm.controls.activity_id.setValue(this.selectedTimeSheet?.activity?.id);

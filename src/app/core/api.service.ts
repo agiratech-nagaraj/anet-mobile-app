@@ -9,13 +9,14 @@ import {SignOutResponse} from './models/http/responses/sign-out.response';
 import {ActivitiesListResponse} from './models/http/responses/activities-list.response';
 import {ProjectsListResponse} from './models/http/responses/projects-list.response';
 import {TimesheetPayload} from './models/http/payloads/timesheet.payload';
-import {TimesheetResponse} from './models/http/responses/timesheet.response';
+import {TimesheetsResponse} from './models/http/responses/timesheets.response';
 import {WorkFromHome} from './models/http/payloads/wfh.payload';
 import {WFHResponse} from './models/http/responses/wfh.response';
 import {WFHListResponse} from './models/http/responses/wfh-list.response';
 import {StorageKeys, StorageService} from '../storage';
 import {SignInResponse} from './models/http/responses/sign-in.response';
 import {AlertService} from './alert.service';
+import {TimesheetResponse} from "./models/http/responses/timesheet.response";
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('Getting Project List', null)));
   }
 
-  addTimeSheet(payload: TimesheetPayload): Observable<TimesheetResponse> {
+  addTimeSheet(payload: TimesheetPayload): Observable<TimesheetsResponse> {
     const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
     const userId = user?.data?.id;
     payload = {...payload, account_id: userId.toString()};
@@ -67,7 +68,7 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('Adding Time Sheet', null)));
   }
 
-  getTimeSheets(pageNo = 1, duration = 'this month'): Observable<TimesheetResponse> {
+  getTimeSheets(pageNo = 1, duration = 'this month'): Observable<TimesheetsResponse> {
     const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
     const userId = user?.data?.id;
     const url = `anet-api/timesheets/?page_no=${pageNo}&duration=${duration}&user_id=${userId}`;
@@ -115,9 +116,9 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('Delete Applied WFH', null)));
   }
 
-  getTimeSheet(id: number) {
+  getTimeSheet(id: number): Observable<TimesheetResponse> {
     const url = `anet-api/timesheets/${id}`;
-    return this.http.get(url)
+    return this.http.get<TimesheetResponse>(url)
       .pipe(catchError(this.errorHandler('Get Timesheet', null)));
   }
 

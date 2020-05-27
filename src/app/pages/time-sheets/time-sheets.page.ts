@@ -10,7 +10,7 @@ import {select, Store} from '@ngrx/store';
 
 import {ApiService} from '../../core/api.service';
 import {AlertService} from '../../core/alert.service';
-import {Timesheet} from '../../core/models/http/responses/timesheet.response';
+import {Timesheet} from '../../core/models/http/responses/timesheets.response';
 import * as appStore from '../../store/reducers';
 import {
   selectTimesheetsCountState,
