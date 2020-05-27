@@ -8,3 +8,7 @@ export const selectWFHState = createFeatureSelector<fromWFH.State>(
 export const selectWFHListState = createSelector(selectWFHState, state => {
   return state?.data?.result?.work_from_homes ?? [];
 });
+
+export const selectWFHCountState = createSelector(selectWFHState, (state) => {
+  return state?.data?.result?.count;
+});

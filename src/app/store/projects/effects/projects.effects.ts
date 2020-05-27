@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, map, concatMap, tap} from 'rxjs/operators';
-import {EMPTY, of} from 'rxjs';
+import { of} from 'rxjs';
 
 import * as ProjectsActions from '../actions/projects.actions';
 import {ApiService} from '../../../core/api.service';

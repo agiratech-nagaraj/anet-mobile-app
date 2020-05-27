@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {Router} from '@angular/router';
-import {Observable, of} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
-import {ActionSheetController} from '@ionic/angular';
+import {ActionSheetController, IonInfiniteScroll} from '@ionic/angular';
 
 import {select, Store} from '@ngrx/store';
 
@@ -11,7 +12,10 @@ import {ApiService} from '../../core/api.service';
 import {AlertService} from '../../core/alert.service';
 import {Timesheet} from '../../core/models/http/responses/timesheet.response';
 import * as appStore from '../../store/reducers';
-import {selectTimesheetsListState} from '../../store/timesheets/selectors/timesheets.selectors';
+import {
+  selectTimesheetsCountState,
+  selectTimesheetsListState
+} from '../../store/timesheets/selectors/timesheets.selectors';
 import {loadTimesheetss} from '../../store/timesheets/actions/timesheets.actions';
 
 @Component({
@@ -19,7 +23,9 @@ import {loadTimesheetss} from '../../store/timesheets/actions/timesheets.actions
   templateUrl: './time-sheets.page.html',
   styleUrls: ['./time-sheets.page.scss'],
 })
-export class TimeSheetsPage implements OnInit {
+export class TimeSheetsPage implements OnInit, OnDestroy {
+
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   timeSheets$: Observable<Timesheet[]> = of([]);
   pageNo = 1;
@@ -51,6 +57,8 @@ export class TimeSheetsPage implements OnInit {
 
 
   selectedTimeSheet: Timesheet;
+  totalTimeSheets: number;
+  private unSubscribe = new Subject();
 
   constructor(
     private api: ApiService,
@@ -66,9 +74,12 @@ export class TimeSheetsPage implements OnInit {
     this.loadTimeSheet();
   }
 
-  private loadTimeSheet() {
-    this.timeSheets$ = this.store.pipe(select(selectTimesheetsListState));
+
+  ngOnDestroy(): void {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
+
 
   refresh(event) {
     setTimeout(() => {
@@ -95,7 +106,28 @@ export class TimeSheetsPage implements OnInit {
 
   }
 
-  isTimeSheetApplicableForModify(selectedTimeSheet: Timesheet): boolean {
+
+  loadMore(event) {
+    if (this.totalTimeSheets && this.pageNo > (this.totalTimeSheets / 10)) {
+      this.infiniteScroll.disabled = true;
+      return;
+    }
+    this.pageNo += 1;
+    this.store.dispatch(loadTimesheetss({pageNo: this.pageNo, duration: 'this month'}));
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
+  }
+
+  private loadTimeSheet() {
+    this.timeSheets$ = this.store.pipe(select(selectTimesheetsListState));
+    this.store.pipe(select(selectTimesheetsCountState), takeUntil(this.unSubscribe)).subscribe((count) => {
+      this.totalTimeSheets = count;
+    });
+  }
+
+
+  private isTimeSheetApplicableForModify(selectedTimeSheet: Timesheet): boolean {
     const today = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
     const yesterday = this.datePipe.transform(new Date(new Date().setDate(new Date().getDate() - 1)), 'dd/MM/yyyy');
     const dayBeforeYesterday = this.datePipe.transform(new Date(new Date().setDate(new Date().getDate() - 2)), 'dd/MM/yyyy');
@@ -105,6 +137,7 @@ export class TimeSheetsPage implements OnInit {
 
   private reload() {
     this.store.dispatch(loadTimesheetss({pageNo: 1, duration: 'this month'}));
+    this.infiniteScroll.disabled = false;
   }
 
   private removeAppliedTimeSheet() {
@@ -126,8 +159,8 @@ export class TimeSheetsPage implements OnInit {
     }
     this.api.getAppliedWFH(this.selectedTimeSheet?.id).subscribe((res) => {
       if (res?.success) {
-          this.selectedTimeSheet = null;
-          this.router.navigateByUrl('/tabs/logtime', {
+        this.selectedTimeSheet = null;
+        this.router.navigateByUrl('/tabs/logtime', {
           state: {data: res?.result}
         });
       }

@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Observable, of, Subject} from 'rxjs';
 import {DatePipe} from '@angular/common';
 
 import {select, Store} from '@ngrx/store';
 
-import {ActionSheetController} from '@ionic/angular';
+import {ActionSheetController, IonInfiniteScroll} from '@ionic/angular';
 
 import {ApiService} from '../../core/api.service';
 import {AlertService} from '../../core/alert.service';
@@ -19,7 +19,9 @@ import {Router} from '@angular/router';
   templateUrl: './applied-wfh.page.html',
   styleUrls: ['./applied-wfh.page.scss'],
 })
-export class AppliedWfhPage implements OnInit {
+export class AppliedWfhPage implements OnInit, OnDestroy {
+
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   appliedWFHList$: Observable<WorkFromHome[]> = of([]);
   pageNo = 1;
@@ -48,6 +50,10 @@ export class AppliedWfhPage implements OnInit {
   };
 
   selectedWFH: WorkFromHome;
+  totalWFH: number;
+  private unSubscribe = new Subject();
+
+
 
   constructor(
     private api: ApiService,
@@ -61,6 +67,11 @@ export class AppliedWfhPage implements OnInit {
 
   ngOnInit() {
     this.loadAppliedWFH();
+  }
+
+  ngOnDestroy(): void {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 
   loadAppliedWFH() {
@@ -87,7 +98,19 @@ export class AppliedWfhPage implements OnInit {
 
   }
 
-  isWFHAppliedToday(selectedWFH: WorkFromHome): boolean {
+  loadMore(event) {
+    if (this.totalWFH && this.pageNo > (this.totalWFH / 10)) {
+      this.infiniteScroll.disabled = true;
+      return;
+    }
+    this.pageNo += 1;
+    this.store.dispatch(loadWFHs({pageNo: this.pageNo, thisMonth: true}));
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
+  }
+
+  private isWFHAppliedToday(selectedWFH: WorkFromHome): boolean {
     const today = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
     const wfhDate = this.datePipe.transform(selectedWFH?.date, 'dd/MM/yyyy');
     return wfhDate === today;
@@ -122,6 +145,7 @@ export class AppliedWfhPage implements OnInit {
 
   private reload() {
     this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true}));
+    this.infiniteScroll.disabled = false;
   }
 
 }

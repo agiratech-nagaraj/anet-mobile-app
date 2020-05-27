@@ -8,3 +8,7 @@ export const selectTimesheetsState = createFeatureSelector<fromTimesheets.State>
 export const selectTimesheetsListState = createSelector(selectTimesheetsState, (state) => {
   return state?.data?.result?.timesheets ?? [];
 });
+
+export const selectTimesheetsCountState = createSelector(selectTimesheetsState, (state)=>{
+  return state?.data?.result?.count;
+});
