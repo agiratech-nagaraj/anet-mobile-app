@@ -5,6 +5,7 @@ import {EMPTY, of} from 'rxjs';
 
 import * as ProjectsActions from '../actions/projects.actions';
 import {ApiService} from '../../../core/api.service';
+import {cacheProjects} from '../actions/projects.actions';
 
 
 @Injectable()
@@ -13,7 +14,6 @@ export class ProjectsEffects {
   loadProjectss$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ProjectsActions.loadProjectss),
-      tap((a) => console.log(a)),
       concatMap(() => this.api.getProjectsList().pipe(
         map(data => ProjectsActions.loadProjectssSuccess({data})),
         catchError(error => of(ProjectsActions.loadProjectssFailure({error}))))
@@ -21,6 +21,12 @@ export class ProjectsEffects {
     );
   });
 
+  cacheProjectss$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ProjectsActions.loadProjectssSuccess),
+      map(action => cacheProjects({data: action?.data}))
+    );
+  }, {dispatch: false});
 
   constructor(
     private actions$: Actions,

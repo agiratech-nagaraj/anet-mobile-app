@@ -2,23 +2,23 @@ import {Component} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Router} from '@angular/router';
 
-import { Platform} from '@ionic/angular';
+import {Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {AndroidFullScreen} from '@ionic-native/android-full-screen/ngx';
 
-import {clearProjects, loadProjectss} from './store/projects/actions/projects.actions';
-import {clearActivities, loadActivitess} from './store/activites/actions/activites.actions';
 import * as appStore from './store/reducers';
 import {ApiService} from './core/api.service';
 import {AlertService} from './core/alert.service';
 import {selectUserState} from './store/user/selectors/user.selectors';
-import {clearUsers, loadUsers} from './store/user/actions/user.actions';
+import { loadUsers} from './store/user/actions/user.actions';
 import {StorageKeys, StorageService} from './storage';
 import {SignInResponse} from './core/models/http/responses/sign-in.response';
-import {clearWFH, loadWFHs} from './store/wfh/actions/wfh.actions';
-import {clearTimesheets, loadTimesheetss} from './store/timesheets/actions/timesheets.actions';
-import {AuthService} from "./core/auth.service";
+import { loadWFHs} from './store/wfh/actions/wfh.actions';
+import { loadTimesheetss} from './store/timesheets/actions/timesheets.actions';
+import {AuthService} from './core/auth.service';
+import {initProjectss, loadProjectss} from './store/projects/actions/projects.actions';
+import {initActivitess, loadActivitess} from './store/activites/actions/activites.actions';
 
 @Component({
   selector: 'app-root',
@@ -42,7 +42,9 @@ export class AppComponent {
   ) {
     this.initializeApp();
     const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
-    this.store.dispatch(loadUsers({data: userData?.data}));
+    if (userData) {
+      this.store.dispatch(loadUsers({data: userData?.data}));
+    }
     this.userStateListener();
   }
 
@@ -54,6 +56,8 @@ export class AppComponent {
   }
 
   refresh() {
+    this.store.dispatch(loadProjectss());
+    this.store.dispatch(loadActivitess());
     this.loadStates();
   }
 
@@ -72,9 +76,25 @@ export class AppComponent {
     });
   }
 
+  private initProjectsAndActivitiesStates() {
+
+    const projects = StorageService.instance.getItem(StorageKeys.cachedProjects, true);
+    if (projects) {
+      this.store.dispatch(initProjectss({data: projects}));
+    } else {
+      this.store.dispatch(loadProjectss());
+    }
+
+    const activities = StorageService.instance.getItem(StorageKeys.cachedActivites, true);
+    if (activities) {
+      this.store.dispatch(initActivitess({data: activities}));
+    } else {
+      this.store.dispatch(loadActivitess());
+    }
+
+  }
+
   private loadStates() {
-    this.store.dispatch(loadProjectss());
-    this.store.dispatch(loadActivitess());
     this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true}));
     this.store.dispatch(loadTimesheetss({pageNo: 1, duration: 'this month'}));
   }
@@ -84,12 +104,13 @@ export class AppComponent {
     this.store.pipe(select(selectUserState)).subscribe((state) => {
       this.islogin = !!state?.data;
       if (this.islogin) {
+        this.initProjectsAndActivitiesStates();
         this.loadStates();
       }
     });
   }
 
-  switchToFullScreen() {
+  private switchToFullScreen() {
     this.androidFullScreen.isImmersiveModeSupported()
       .then(() => {
         this.androidFullScreen.immersiveMode();

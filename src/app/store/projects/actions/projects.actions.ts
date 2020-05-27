@@ -1,5 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 
+
+export const initProjectss = createAction(
+  '[Projects] Init Projectss',
+  props<{ data: any }>()
+);
+
 export const loadProjectss = createAction(
   '[Projects] Load Projectss'
 );
@@ -15,5 +21,10 @@ export const loadProjectssFailure = createAction(
 );
 
 export const clearProjects = createAction(
-  '[Projects] clear Projectss '
+  '[Projects] Clear Projectss '
+);
+
+export const cacheProjects = createAction(
+  '[Projects] Cache Projectss',
+  props<{ data: any }>()
 );
