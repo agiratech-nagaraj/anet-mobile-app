@@ -99,12 +99,12 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
   }
 
   loadMore(event) {
-    if (this.totalWFH && this.pageNo > (this.totalWFH / 10)) {
-      this.infiniteScroll.disabled = true;
-      return;
-    }
-    this.pageNo += 1;
-    this.store.dispatch(loadWFHs({pageNo: this.pageNo, thisMonth: true}));
+    // if (this.totalWFH && this.pageNo > (this.totalWFH / 10)) {
+    //   this.infiniteScroll.disabled = true;
+    //   return;
+    // }
+    // this.pageNo += 1;
+    // this.store.dispatch(loadWFHs({pageNo: this.pageNo, thisMonth: true}));
     setTimeout(() => {
       event.target.complete();
     }, 2000);

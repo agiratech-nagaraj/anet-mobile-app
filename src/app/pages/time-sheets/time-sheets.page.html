@@ -25,10 +25,10 @@
   </div>
 
   <ng-template #timeSheetList>
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
-      <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Loading more data...">
+<!--    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">-->
+<!--      <ion-infinite-scroll-content-->
+<!--        loadingSpinner="bubbles"-->
+<!--        loadingText="Loading more data...">-->
 
         <ion-list>
           <ion-item *ngFor="let item of timeSheets$ | async" (click)="presentActionSheet(item)">
@@ -52,8 +52,8 @@
           </ion-item>
 
         </ion-list>
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+<!--      </ion-infinite-scroll-content>-->
+<!--    </ion-infinite-scroll>-->
   </ng-template>
 
 </ion-content>

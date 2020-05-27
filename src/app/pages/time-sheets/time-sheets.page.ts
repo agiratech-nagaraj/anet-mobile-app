@@ -108,12 +108,12 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
 
 
   loadMore(event) {
-    if (this.totalTimeSheets && this.pageNo > (this.totalTimeSheets / 10)) {
-      this.infiniteScroll.disabled = true;
-      return;
-    }
-    this.pageNo += 1;
-    this.store.dispatch(loadTimesheetss({pageNo: this.pageNo, duration: 'this month'}));
+    // if (this.totalTimeSheets && this.pageNo > (this.totalTimeSheets / 10)) {
+    //   this.infiniteScroll.disabled = true;
+    //   return;
+    // }
+    // this.pageNo += 1;
+    // this.store.dispatch(loadTimesheetss({pageNo: this.pageNo, duration: 'this month'}));
     setTimeout(() => {
       event.target.complete();
     }, 2000);
