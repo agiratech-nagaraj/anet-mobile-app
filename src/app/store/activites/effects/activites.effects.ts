@@ -26,7 +26,7 @@ export class ActivitesEffects {
       ofType(ActivitesActions.loadActivitessSuccess),
       map(action => ActivitesActions.cacheActivitess({data: action?.data}))
     );
-  }, {dispatch: false});
+  });
 
 
   constructor(

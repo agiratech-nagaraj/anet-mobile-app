@@ -20,7 +20,7 @@
     </ion-refresher>
   </div>
 
-  <div *ngIf="( appliedWFHList$ | async).length == 0; else wfhList">
+  <div *ngIf="( appliedWFHList$ | async).length == 0; else wfhList" class="ion-text-center">
     No data found
   </div>
 
