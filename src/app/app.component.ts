@@ -13,12 +13,13 @@ import {AlertService} from './core/alert.service';
 import {selectUserState} from './store/user/selectors/user.selectors';
 import { loadUsers} from './store/user/actions/user.actions';
 import {StorageKeys, StorageService} from './storage';
-import {SignInResponse} from './core/models/http/responses/sign-in.response';
+import {SignInResponse, User} from './core/models/http/responses/sign-in.response';
 import { loadWFHs} from './store/wfh/actions/wfh.actions';
 import { loadTimesheetss} from './store/timesheets/actions/timesheets.actions';
 import {AuthService} from './core/auth.service';
 import {initProjectss, loadProjectss} from './store/projects/actions/projects.actions';
 import {initActivitess, loadActivitess} from './store/activites/actions/activites.actions';
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -28,6 +29,8 @@ import {initActivitess, loadActivitess} from './store/activites/actions/activite
 export class AppComponent {
 
   islogin = false;
+  user: User;
+  apiURL = environment.url;
 
   constructor(
     private platform: Platform,
@@ -104,6 +107,7 @@ export class AppComponent {
     this.store.pipe(select(selectUserState)).subscribe((state) => {
       this.islogin = !!state?.data;
       if (this.islogin) {
+        this.user = state.data;
         this.initProjectsAndActivitiesStates();
         this.loadStates();
       }

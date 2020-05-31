@@ -19,3 +19,32 @@
 .notes {
   font-size: 14px;
 }
+
+.profile{
+
+  border-bottom: 1px solid rgba(0,0,0,.24);
+  padding: 0 0 16px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  place-content: center;
+  flex-flow: column;
+
+  img{
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    margin: 12px;
+  }
+  .labels{
+   margin: 0 16px;
+   text-align: center;
+  }
+  h4, h6{
+    padding: 0;
+    margin: 0;
+  }
+}

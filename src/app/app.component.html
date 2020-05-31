@@ -1,50 +1,81 @@
 <ion-app>
 
-   <ion-menu side="start" menuId="first" contentId="main">
+  <ion-menu side="start" menuId="first" contentId="main">
 
-      <ion-header>
-         <ion-toolbar color="primary">
-            <ion-title><b>A</b>-Net</ion-title>
-         </ion-toolbar>
-      </ion-header>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title><b>A</b>-Net</ion-title>
+      </ion-toolbar>
+    </ion-header>
 
-      <ion-content>
+    <ion-content>
 
-         <ion-list>
-            <ion-item *ngIf="islogin">
-               <ion-button (click)="refresh()">
-                  <ion-icon src="assets/cached.svg"></ion-icon>
-                  &nbsp;&nbsp;Refresh
-               </ion-button>
-            </ion-item>
-            <ion-item *ngIf="islogin">
-               <ion-button (click)="signOut()">
-                  <ion-icon src="assets/lock_open.svg"></ion-icon>
-                  &nbsp;&nbsp;Sign Out
-               </ion-button>
-            </ion-item>
-            <ion-item *ngIf="!islogin">
-               <ion-button routerLink="/sign-in">
-                  <ion-icon src="assets/lock_open.svg"></ion-icon>
-                  &nbsp;&nbsp;Sign In
-               </ion-button>
-            </ion-item>
-         </ion-list>
-      </ion-content>
-      <ion-footer>
-         <ion-list>
+      <ion-list>
+
+        <section *ngIf="islogin; else noLogin">
+
+          <div class="profile">
+
+            <img [src]="apiURL+'/'+user.attachment" alt="profile">
+
+            <div class="labels">
+              <h4>
+                {{user.name}}
+              </h4>
+               <h6 style="color: rgba(0,0,0,0.67)">
+                  <small>EmpId: {{user.emp_id}}</small>
+               </h6>
+              <h6 style="color: rgba(0,0,0,0.67)">
+                <small>Email: {{user.email}}</small>
+              </h6>
+            </div>
+
+          </div>
+
+          <ion-item>
+            <ion-button (click)="refresh()">
+              <ion-icon src="assets/cached.svg"></ion-icon>
+              &nbsp;&nbsp;Refresh
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+            <ion-button (click)="signOut()">
+              <ion-icon src="assets/lock_open.svg"></ion-icon>
+              &nbsp;&nbsp;Sign Out
+            </ion-button>
+          </ion-item>
+
+        </section>
+
+        <ng-template #noLogin>
+          <section>
             <ion-item>
-               <ion-text color="primary" >
-                  <h5>Powered by <b>Agira</b>
-                     <small class="ion-margin-horizontal"><b>V.0.1 beta 1</b></small>
-                  </h5>
-               </ion-text>
+              <ion-button routerLink="/sign-in">
+                <ion-icon src="assets/lock_open.svg"></ion-icon>
+                &nbsp;&nbsp;Sign In
+              </ion-button>
             </ion-item>
-         </ion-list>
-      </ion-footer>
+          </section>
+        </ng-template>
 
-   </ion-menu>
+      </ion-list>
 
-   <ion-router-outlet id="main"></ion-router-outlet>
+    </ion-content>
+    <ion-footer>
+      <ion-list>
+        <ion-item>
+          <ion-text color="primary">
+            <h5>Powered by <b>Agira</b>
+              <small class="ion-margin-horizontal"><b>V.0.1 beta 1</b></small>
+            </h5>
+          </ion-text>
+        </ion-item>
+      </ion-list>
+    </ion-footer>
+
+  </ion-menu>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
 
 </ion-app>

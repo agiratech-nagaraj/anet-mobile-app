@@ -47,7 +47,7 @@
 
   <section *ngIf="!(timeSheetsLoading$ | async)">
 
-    <div *ngIf="( timeSheets$ | async).length == 0; else timeSheetList" class="ion-text-center">
+    <div *ngIf="( timeSheets$ | async).length == 0; else timeSheetList" class="ion-text-center ion-padding">
       No data found
     </div>
 
