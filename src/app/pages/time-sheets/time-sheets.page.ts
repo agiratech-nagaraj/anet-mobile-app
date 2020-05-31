@@ -160,9 +160,13 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
     if (!this.selectedTimeSheet) {
       return;
     }
-    this.api.getAppliedWFH(this.selectedTimeSheet?.id).subscribe((res) => {
+    this.api.getTimeSheet(this.selectedTimeSheet?.id).subscribe((res) => {
       if (res?.success) {
         this.selectedTimeSheet = null;
+        if (!res.result) {
+          this.alertService.toastAlert(res?.message, 'Info');
+          return;
+        }
         this.router.navigateByUrl('/tabs/logtime', {
           state: {data: res?.result}
         });

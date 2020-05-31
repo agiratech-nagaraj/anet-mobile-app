@@ -15,7 +15,7 @@
       <ion-card-header class="scroll">
          Work from home for {{wfhForm?.controls?.date?.value | date: 'dd/MM/yyyy'}}
       </ion-card-header>
-      <ion-card-content>
+      <ion-card-content *ngIf="wfhForm">
          <form [formGroup]="wfhForm">
             <ion-list>
 

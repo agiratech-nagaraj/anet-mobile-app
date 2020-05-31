@@ -13,6 +13,7 @@ import * as appStore from '../../store/reducers';
 import {selectWFHListState} from '../../store/wfh/selectors/wfh.selectors';
 import {loadWFHs} from '../../store/wfh/actions/wfh.actions';
 import {Router} from '@angular/router';
+import * as WfhRecordResponse from '../../core/models/http/responses/wfh-record.response';
 
 @Component({
   selector: 'app-applied-wfh',
@@ -49,11 +50,10 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
     }
   };
 
-  selectedWFH: WorkFromHome;
+  selectedWFH: WfhRecordResponse.Result;
   totalWFH: number;
   isRefreshing = false;
   private unSubscribe = new Subject();
-
 
 
   constructor(
@@ -126,6 +126,10 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
     this.api.getAppliedWFH(this.selectedWFH?.id).subscribe((res) => {
       if (res?.success) {
         this.selectedWFH = null;
+        if (!res.result) {
+          this.alertService.toastAlert(res?.message, 'Error');
+          return;
+        }
         this.router.navigateByUrl('/tabs/wfh', {
           state: {data: res?.result}
         });

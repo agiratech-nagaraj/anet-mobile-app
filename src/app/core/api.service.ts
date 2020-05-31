@@ -17,6 +17,7 @@ import {StorageKeys, StorageService} from '../storage';
 import {SignInResponse} from './models/http/responses/sign-in.response';
 import {AlertService} from './alert.service';
 import {TimesheetResponse} from "./models/http/responses/timesheet.response";
+import {WfhRecordResponse} from "./models/http/responses/wfh-record.response";
 
 @Injectable({
   providedIn: 'root'
@@ -92,9 +93,9 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('WFH List', null)));
   }
 
-  getAppliedWFH(id: number) {
+  getAppliedWFH(id: number): Observable<WfhRecordResponse> {
     const url = `anet-api/work_from_homes/${id}`;
-    return this.http.get(url)
+    return this.http.get<WfhRecordResponse>(url)
       .pipe(catchError(this.errorHandler('get Applied WFH', null)));
   }
 

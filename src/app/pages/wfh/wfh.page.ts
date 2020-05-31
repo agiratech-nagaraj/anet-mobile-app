@@ -15,6 +15,7 @@ import {StorageKeys, StorageService} from '../../storage';
 import { WorkFromHome} from '../../core/models/http/payloads/wfh.payload';
 import {DatePipe} from '@angular/common';
 import * as wfhList from '../../core/models/http/responses/wfh-list.response';
+import * as WfhRecordResponse from '../../core/models/http/responses/wfh-record.response';
 
 
 @Component({
@@ -64,7 +65,7 @@ export class WfhPage implements OnInit {
     return this._cacheWFHPayload;
   }
 
-  selectedWFH: wfhList.WorkFromHome;
+  selectedWFH: WfhRecordResponse.Result;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -82,7 +83,6 @@ export class WfhPage implements OnInit {
 
   ngOnInit(): void {
 
-    console.log('on-init-history', history.state?.data);
 
     const updateData = history.state?.data;
     this.selectedWFH = updateData as wfhList.WorkFromHome;
@@ -93,7 +93,7 @@ export class WfhPage implements OnInit {
         Validators.required,
       ])),
 
-      billable: new FormControl(initialData?.billable.toString() ?? '', Validators.compose([
+      billable: new FormControl(initialData?.billable?.toString() ?? '', Validators.compose([
         Validators.required,
       ])),
 
@@ -182,7 +182,6 @@ export class WfhPage implements OnInit {
       return;
     }
     this.selectedWFH = updateData as wfhList.WorkFromHome;
-    console.log('selected wfh', updateData);
     this.wfhForm.reset();
     this.wfhForm.controls.project_id.setValue(this.selectedWFH?.project_id);
     this.wfhForm.controls.date.setValue(this.selectedWFH?.date);

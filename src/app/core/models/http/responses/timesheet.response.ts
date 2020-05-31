@@ -34,4 +34,5 @@ export interface Result {
 export interface TimesheetResponse {
   success: boolean;
   result: Result;
+  message?: string;
 }
