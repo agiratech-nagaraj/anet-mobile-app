@@ -25,7 +25,7 @@ import {loadTimesheetss} from '../../store/timesheets/actions/timesheets.actions
 })
 export class TimeSheetsPage implements OnInit, OnDestroy {
 
-  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  // @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   timeSheets$: Observable<Timesheet[]> = of([]);
   pageNo = 1;
@@ -58,6 +58,7 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
 
   selectedTimeSheet: Timesheet;
   totalTimeSheets: number;
+  isRefreshing = false;
   private unSubscribe = new Subject();
 
   constructor(
@@ -82,9 +83,11 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
 
 
   refresh(event) {
+    this.isRefreshing = true;
     setTimeout(() => {
-      this.reload();
+      this.isRefreshing = false;
       event.target.complete();
+      this.reload();
     }, 1000);
   }
 
@@ -137,7 +140,7 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
 
   private reload() {
     this.store.dispatch(loadTimesheetss({pageNo: 1, duration: 'this month'}));
-    this.infiniteScroll.disabled = false;
+    // this.infiniteScroll.disabled = false;
   }
 
   private removeAppliedTimeSheet() {

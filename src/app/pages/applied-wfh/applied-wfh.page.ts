@@ -21,7 +21,7 @@ import {Router} from '@angular/router';
 })
 export class AppliedWfhPage implements OnInit, OnDestroy {
 
-  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  // @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   appliedWFHList$: Observable<WorkFromHome[]> = of([]);
   pageNo = 1;
@@ -51,6 +51,7 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
 
   selectedWFH: WorkFromHome;
   totalWFH: number;
+  isRefreshing = false;
   private unSubscribe = new Subject();
 
 
@@ -79,8 +80,10 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
   }
 
   refresh(event) {
+    this.isRefreshing = true;
     setTimeout(() => {
       this.reload();
+      this.isRefreshing = false;
       event.target.complete();
     }, 2000);
   }
@@ -145,7 +148,7 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
 
   private reload() {
     this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true}));
-    this.infiniteScroll.disabled = false;
+    // this.infiniteScroll.disabled = false;
   }
 
 }
