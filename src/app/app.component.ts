@@ -3,8 +3,6 @@ import {select, Store} from '@ngrx/store';
 import {Router} from '@angular/router';
 
 import {Platform} from '@ionic/angular';
-import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {AndroidFullScreen} from '@ionic-native/android-full-screen/ngx';
 
 import * as appStore from './store/reducers';
@@ -21,6 +19,12 @@ import {initProjectss, loadProjectss} from './store/projects/actions/projects.ac
 import {initActivitess, loadActivitess} from './store/activites/actions/activites.actions';
 import {environment} from '../environments/environment';
 
+import {
+  Plugins,
+} from '@capacitor/core';
+
+const { StatusBar, SplashScreen } = Plugins;
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -34,8 +38,6 @@ export class AppComponent {
 
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
     private store: Store<appStore.State>,
     private router: Router,
     private api: ApiService,
@@ -53,8 +55,8 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.backgroundColorByHexString('#208590');
-      this.splashScreen.hide();
+      StatusBar?.setBackgroundColor?.({ color: '#3c8dbc'});
+      SplashScreen?.hide?.();
     });
   }
 

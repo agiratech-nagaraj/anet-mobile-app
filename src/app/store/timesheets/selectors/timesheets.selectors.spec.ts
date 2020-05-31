@@ -7,6 +7,6 @@ describe('Timesheets Selectors', () => {
       [fromTimesheets.timesheetsFeatureKey]: {}
     });
 
-    expect(result).toEqual({});
+    expect(result).toEqual({data: null, loading: false});
   });
 });
