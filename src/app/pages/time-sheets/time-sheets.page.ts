@@ -100,7 +100,7 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
     }
 
     const actionSheet = await this.actionSheetController.create({
-      header: 'WFH',
+      header: 'Time Sheets',
       cssClass: 'my-custom-class',
       buttons: this.actions
     });
