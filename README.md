@@ -7,6 +7,13 @@
     3. NGRX - V9
     4. Capacitor - V2
 
+## Run 
+
+     ionic serve
+
+## Run in android studio to build
+    ionic cap run android --prod
+  
 ## Download
   APK available in this repo `anet.apk`
 
@@ -19,5 +26,8 @@
   <img src="screenshots/wfh.jpeg" height="300em" />
   <img src="screenshots/timesheets.jpeg" height="300em" />
   <img src="screenshots/popup.jpeg" height="300em" />
+  <img src="screenshots/activity.jpeg" height="300em" />
   <img src="screenshots/applied-wfh.jpeg" height="300em" />
+  <img src="screenshots/wfh-actions.jpeg" height="300em" />
+  <img src="screenshots/timesheet-acctions.jpeg" height="300em" />
 <Rows/>
