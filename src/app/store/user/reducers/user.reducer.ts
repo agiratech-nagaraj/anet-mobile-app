@@ -1,4 +1,5 @@
 import {createReducer, on} from '@ngrx/store';
+
 import * as UserActions from '../actions/user.actions';
 import {User} from '../../../core/models/http/responses/sign-in.response';
 

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ApiInterceptor} from './http-interceptors/api.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
+
+import {ApiInterceptor} from './http-interceptors/api.interceptor';
 import {AuthInterceptor} from './http-interceptors/auth.interceptor';
 
 

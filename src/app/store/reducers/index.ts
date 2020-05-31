@@ -2,6 +2,7 @@ import {
   ActionReducerMap,
   MetaReducer
 } from '@ngrx/store';
+
 import {environment} from '../../../environments/environment';
 import * as fromActivites from '../activites/reducers/activites.reducer';
 import * as fromProjects from '../projects/reducers/projects.reducer';

@@ -16,8 +16,8 @@ import {WFHListResponse} from './models/http/responses/wfh-list.response';
 import {StorageKeys, StorageService} from '../storage';
 import {SignInResponse} from './models/http/responses/sign-in.response';
 import {AlertService} from './alert.service';
-import {TimesheetResponse} from "./models/http/responses/timesheet.response";
-import {WfhRecordResponse} from "./models/http/responses/wfh-record.response";
+import {TimesheetResponse} from './models/http/responses/timesheet.response';
+import {WfhRecordResponse} from './models/http/responses/wfh-record.response';
 
 @Injectable({
   providedIn: 'root'

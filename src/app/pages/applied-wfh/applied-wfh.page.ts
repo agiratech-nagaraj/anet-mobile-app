@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
 import {DatePipe} from '@angular/common';
 
 import {select, Store} from '@ngrx/store';
 
-import {ActionSheetController, IonInfiniteScroll} from '@ionic/angular';
+import {ActionSheetController} from '@ionic/angular';
 
 import {ApiService} from '../../core/api.service';
 import {AlertService} from '../../core/alert.service';

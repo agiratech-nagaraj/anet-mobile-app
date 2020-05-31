@@ -1,4 +1,4 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 
 import * as WFHActions from '../actions/wfh.actions';
 import {WFHListResponse} from '../../../core/models/http/responses/wfh-list.response';

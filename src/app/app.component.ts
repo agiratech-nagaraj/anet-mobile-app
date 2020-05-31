@@ -19,7 +19,7 @@ import { loadTimesheetss} from './store/timesheets/actions/timesheets.actions';
 import {AuthService} from './core/auth.service';
 import {initProjectss, loadProjectss} from './store/projects/actions/projects.actions';
 import {initActivitess, loadActivitess} from './store/activites/actions/activites.actions';
-import {environment} from "../environments/environment";
+import {environment} from '../environments/environment';
 
 @Component({
   selector: 'app-root',

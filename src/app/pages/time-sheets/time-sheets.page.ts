@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {Router} from '@angular/router';
 import {Observable, of, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {ActionSheetController, IonInfiniteScroll} from '@ionic/angular';
+import {ActionSheetController} from '@ionic/angular';
 
 import {select, Store} from '@ngrx/store';
 

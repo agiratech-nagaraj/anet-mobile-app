@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {catchError, map, concatMap, tap} from 'rxjs/operators';
+import {catchError, map, concatMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 
 import * as ProjectsActions from '../actions/projects.actions';
