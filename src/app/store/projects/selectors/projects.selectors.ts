@@ -11,3 +11,7 @@ export const selectProjectListState = createSelector(selectProjectsState,
     return res?.data?.result ?? [];
   }
 );
+
+export const selectProjectsLoader = createSelector(selectProjectsState, (state) => {
+  return state.loading;
+});

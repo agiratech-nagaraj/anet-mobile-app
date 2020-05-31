@@ -11,7 +11,7 @@ import {AlertService} from '../../core/alert.service';
 import {ApiService} from '../../core/api.service';
 import * as appStore from '../../store/reducers';
 import {selectActivitiesListState} from '../../store/activites/selectors/activites.selectors';
-import {selectProjectListState} from '../../store/projects/selectors/projects.selectors';
+import {selectProjectListState, selectProjectsLoader} from '../../store/projects/selectors/projects.selectors';
 import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
 import * as activitiesListRes from '../../core/models/http/responses/activities-list.response';
 import {StorageKeys, StorageService} from '../../storage';
@@ -51,6 +51,7 @@ export class LogTimePage implements OnInit {
   public timeSheetForm: FormGroup;
   public projects$: Observable<projectsListRes.Result[]> = of([]);
   public activities$: Observable<activitiesListRes.Result[]> = of([]);
+  public projectsLoading$;
 
   // tslint:disable-next-line:variable-name
   private _cacheLogTimePayload: TimesheetPayload;
@@ -88,6 +89,7 @@ export class LogTimePage implements OnInit {
     const updateData = history.state?.data;
     this.selectedTimeSheet = updateData;
     const lastLogPayload = updateData || this.cacheLogTimePayload;
+    this.projectsLoading$ = this.store.pipe(select(selectProjectsLoader));
 
     this.timeSheetForm = this.formBuilder.group({
 

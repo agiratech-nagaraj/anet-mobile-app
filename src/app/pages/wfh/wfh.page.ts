@@ -8,7 +8,7 @@ import {Observable, of} from 'rxjs';
 import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
 import {select, Store} from '@ngrx/store';
 import * as appStore from '../../store/reducers';
-import {selectProjectListState} from '../../store/projects/selectors/projects.selectors';
+import {selectProjectListState, selectProjectsLoader} from '../../store/projects/selectors/projects.selectors';
 import {AlertService} from '../../core/alert.service';
 import {ApiService} from '../../core/api.service';
 import {StorageKeys, StorageService} from '../../storage';
@@ -49,6 +49,7 @@ export class WfhPage implements OnInit {
 
   public wfhForm: FormGroup;
   public projects$: Observable<projectsListRes.Result[]> = of([]);
+  public projectsLoading$;
   // tslint:disable-next-line:variable-name
   private _cacheWFHPayload: WorkFromHome;
 
@@ -87,6 +88,8 @@ export class WfhPage implements OnInit {
     const updateData = history.state?.data;
     this.selectedWFH = updateData as wfhList.WorkFromHome;
     const initialData = updateData || this.cacheWFHPayload;
+    this.projectsLoading$ = this.store.pipe(select(selectProjectsLoader));
+
     this.wfhForm = this.formBuilder.group({
 
       project_id: new FormControl(initialData?.project_id ?? '', Validators.compose([

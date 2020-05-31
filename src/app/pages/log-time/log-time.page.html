@@ -21,7 +21,10 @@
 
           <ion-item>
             <ion-label>Project</ion-label>
-            <ion-select formControlName="project_id" placeholder="Select Project">
+            <div *ngIf="projectsLoading$ | async">
+              <ion-spinner color="primary" name="dots"></ion-spinner>
+            </div>
+            <ion-select *ngIf="!(projectsLoading$ | async)"  formControlName="project_id" placeholder="Select Project">
               <ion-select-option *ngFor="let project of projects$ | async" [value]="project?.id">{{project?.name}}</ion-select-option>
             </ion-select>
           </ion-item>
