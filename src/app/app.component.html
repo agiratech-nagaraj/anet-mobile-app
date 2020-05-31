@@ -16,17 +16,17 @@
 
           <div class="profile">
 
-            <img [src]="apiURL+'/'+user.attachment" alt="profile">
+            <img [src]="apiURL+'/'+user?.attachment" alt="profile">
 
             <div class="labels">
               <h4>
-                {{user.name}}
+                {{user?.name}}
               </h4>
                <h6 style="color: rgba(0,0,0,0.67)">
-                  <small>EmpId: {{user.emp_id}}</small>
+                  <small>EmpId: {{user?.emp_id}}</small>
                </h6>
               <h6 style="color: rgba(0,0,0,0.67)">
-                <small>Email: {{user.email}}</small>
+                <small>Email: {{user?.email}}</small>
               </h6>
             </div>
 
