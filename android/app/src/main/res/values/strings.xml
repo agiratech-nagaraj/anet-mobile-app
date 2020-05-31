@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Anet</string>
+    <string name="title_activity_main">Anet</string>
+    <string name="package_name">com.agiratect.anet</string>
+    <string name="custom_url_scheme">com.agiratect.anet</string>
+</resources>
