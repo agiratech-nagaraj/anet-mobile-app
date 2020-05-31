@@ -165,7 +165,7 @@ export class WfhPage implements OnInit {
       .subscribe(async (res) => {
         loaderRef.dismiss();
         if (res?.success) {
-          await this.alertService.toastAlert('Added Successfully', 'Info');
+          await this.alertService.toastAlert('Updated Successfully', 'Info');
           this.wfhForm.reset();
           this.selectedWFH = null;
           history.state.data = null;

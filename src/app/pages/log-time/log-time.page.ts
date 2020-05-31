@@ -177,7 +177,6 @@ export class LogTimePage implements OnInit {
 
 
   private setFormForUpdateLogTime() {
-    debugger
     const updateData = history.state?.data;
     if (!updateData || this.selectedTimeSheet) {
       return;
