@@ -7,6 +7,6 @@ describe('WFH Selectors', () => {
       [fromWFH.wFHFeatureKey]: {}
     });
 
-    expect(result).toEqual({});
+    expect(result).toEqual({data: null, loading: false});
   });
 });

@@ -7,21 +7,23 @@ export const wFHFeatureKey = 'wFH';
 
 export interface State {
   data: WFHListResponse;
+  loading: boolean;
 
 }
 
 export const initialState: State = {
- data: null
+ data: null,
+ loading: false
 };
 
 
 export const reducer = createReducer(
   initialState,
 
-  on(WFHActions.loadWFHs, state => state),
-  on(WFHActions.loadWFHsSuccess, (state, action) => ({...state, data: action.data})),
-  on(WFHActions.loadWFHsFailure, (state, action) => ({...state, error: action.error})),
-  on(WFHActions.clearWFH, (state, action) => ({data: null, error: null})),
+  on(WFHActions.loadWFHs, state => ({...state, loading: true})),
+  on(WFHActions.loadWFHsSuccess, (state, action) => ({...state, data: action.data, error: null, loading: false})),
+  on(WFHActions.loadWFHsFailure, (state, action) => ({...state, error: action.error, loading: false})),
+  on(WFHActions.clearWFH, (state, action) => ({...state, data: null, error: null})),
 
 );
 

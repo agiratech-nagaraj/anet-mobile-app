@@ -10,7 +10,7 @@ import {ApiService} from '../../core/api.service';
 import {AlertService} from '../../core/alert.service';
 import {WorkFromHome} from '../../core/models/http/responses/wfh-list.response';
 import * as appStore from '../../store/reducers';
-import {selectWFHListState} from '../../store/wfh/selectors/wfh.selectors';
+import {selectsWFHListLoader, selectWFHListState} from '../../store/wfh/selectors/wfh.selectors';
 import {loadWFHs} from '../../store/wfh/actions/wfh.actions';
 import {Router} from '@angular/router';
 import * as WfhRecordResponse from '../../core/models/http/responses/wfh-record.response';
@@ -49,10 +49,11 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
       this.updateAppliedWFH();
     }
   };
-
   selectedWFH: WfhRecordResponse.Result;
   totalWFH: number;
   isRefreshing = false;
+  wfhListLoading$;
+
   private unSubscribe = new Subject();
 
 
@@ -67,6 +68,7 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.wfhListLoading$ = this.store.pipe(select(selectsWFHListLoader))
     this.loadAppliedWFH();
   }
 
@@ -81,11 +83,11 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
 
   refresh(event) {
     this.isRefreshing = true;
+    this.reload();
     setTimeout(() => {
-      this.reload();
       this.isRefreshing = false;
       event.target.complete();
-    }, 2000);
+    }, 500);
   }
 
   async presentActionSheet(selectedWFH: WorkFromHome) {

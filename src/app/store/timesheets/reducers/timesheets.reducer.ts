@@ -6,19 +6,21 @@ export const timesheetsFeatureKey = 'timesheets';
 
 export interface State {
   data: TimesheetsResponse;
+  loading: boolean;
 }
 
 export const initialState: State = {
-  data: null
+  data: null,
+  loading: false,
 };
 
 
 export const reducer = createReducer(
   initialState,
 
-  on(TimesheetsActions.loadTimesheetss, state => state),
-  on(TimesheetsActions.loadTimesheetssSuccess, (state, action) => ({...state, data: action.data})),
-  on(TimesheetsActions.loadTimesheetssFailure, (state, action) => ({...state, error: action.error})),
-  on(TimesheetsActions.clearTimesheets, (state, action) => ({data: null, error: null})),
+  on(TimesheetsActions.loadTimesheetss, state => ({...state, loading: true})),
+  on(TimesheetsActions.loadTimesheetssSuccess, (state, action) => ({...state, data: action.data, error: null, loading: false})),
+  on(TimesheetsActions.loadTimesheetssFailure, (state, action) => ({...state, error: action.error, loading: false})),
+  on(TimesheetsActions.clearTimesheets, (state, action) => ({...state, data: null, error: null})),
 );
 

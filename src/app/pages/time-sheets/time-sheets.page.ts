@@ -14,7 +14,7 @@ import {Timesheet} from '../../core/models/http/responses/timesheets.response';
 import * as appStore from '../../store/reducers';
 import {
   selectTimesheetsCountState,
-  selectTimesheetsListState
+  selectTimesheetsListState, selectTimesheetsLoader
 } from '../../store/timesheets/selectors/timesheets.selectors';
 import {loadTimesheetss} from '../../store/timesheets/actions/timesheets.actions';
 
@@ -54,11 +54,11 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
       }
     }
   ];
-
-
   selectedTimeSheet: Timesheet;
   totalTimeSheets: number;
   isRefreshing = false;
+  timeSheetsLoading$;
+
   private unSubscribe = new Subject();
 
   constructor(
@@ -73,6 +73,7 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadTimeSheet();
+    this.timeSheetsLoading$ = this.store.pipe(select(selectTimesheetsLoader));
   }
 
 
@@ -84,11 +85,11 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
 
   refresh(event) {
     this.isRefreshing = true;
+    this.reload();
     setTimeout(() => {
       this.isRefreshing = false;
       event.target.complete();
-      this.reload();
-    }, 1000);
+    }, 500);
   }
 
   async presentActionSheet(selectedTimeSheet: Timesheet) {
