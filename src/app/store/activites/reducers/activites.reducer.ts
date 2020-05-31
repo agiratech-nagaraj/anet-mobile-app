@@ -8,21 +8,23 @@ export const activitesFeatureKey = 'activites';
 
 export interface State {
   data: ActivitiesListResponse;
+  loading: boolean;
 }
 
 export const initialState: State = {
-  data: null
+  data: null,
+  loading: false,
 };
 
 
 export const reducer = createReducer(
   initialState,
 
-  on(ActivitesActions.initActivitess, (state, action) => ({data: action?.data})),
-  on(ActivitesActions.loadActivitess, state => state),
-  on(ActivitesActions.loadActivitessSuccess, (state, action) => ({...state, data: action.data})),
-  on(ActivitesActions.loadActivitessFailure, (state, action) => ({...state, error: action.error})),
-  on(ActivitesActions.clearActivities, (state) => ({data: null})),
+  on(ActivitesActions.initActivitess, (state, action) => ({...state, data: action?.data})),
+  on(ActivitesActions.loadActivitess, state => ({...state, loading: true})),
+  on(ActivitesActions.loadActivitessSuccess, (state, action) => ({...state, data: action.data, error: null, loading: false})),
+  on(ActivitesActions.loadActivitessFailure, (state, action) => ({...state, error: action.error, loading: false})),
+  on(ActivitesActions.clearActivities, (state) => ({...state, data: null})),
   on(ActivitesActions.cacheActivitess, (state, action) => {
     StorageService.instance.setItem(StorageKeys.cachedActivites, action?.data, true);
     return state;

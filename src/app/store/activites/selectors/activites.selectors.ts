@@ -9,3 +9,7 @@ export const selectActivitesState = createFeatureSelector<fromActivites.State>(
 export const selectActivitiesListState = createSelector(selectActivitesState, (res) => {
   return res?.data?.result ?? [];
 });
+
+export const selectActivitiesLoader = createSelector(selectActivitesState, (state) => {
+  return state.loading;
+});

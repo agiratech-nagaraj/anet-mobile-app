@@ -22,7 +22,7 @@ export const reducer = createReducer(
 
   on(ProjectsActions.initProjectss, (state, action) => ({...state, data: action?.data})),
   on(ProjectsActions.loadProjectss, state => ({...state, loading: true})),
-  on(ProjectsActions.loadProjectssSuccess, (state, action) => ({...state, data: action.data, loading: false})),
+  on(ProjectsActions.loadProjectssSuccess, (state, action) => ({...state, data: action.data, error: null, loading: false})),
   on(ProjectsActions.loadProjectssFailure, (state, action) => ({...state, error: action.error, loading: false})),
   on(ProjectsActions.clearProjects, (state) => ({...state, data: null, error: null})),
   on(ProjectsActions.cacheProjects, (state, action) => {

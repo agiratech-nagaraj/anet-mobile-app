@@ -10,7 +10,7 @@ import {NavController, ToastController} from '@ionic/angular';
 import {AlertService} from '../../core/alert.service';
 import {ApiService} from '../../core/api.service';
 import * as appStore from '../../store/reducers';
-import {selectActivitiesListState} from '../../store/activites/selectors/activites.selectors';
+import {selectActivitiesListState, selectActivitiesLoader} from '../../store/activites/selectors/activites.selectors';
 import {selectProjectListState, selectProjectsLoader} from '../../store/projects/selectors/projects.selectors';
 import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
 import * as activitiesListRes from '../../core/models/http/responses/activities-list.response';
@@ -52,6 +52,7 @@ export class LogTimePage implements OnInit {
   public projects$: Observable<projectsListRes.Result[]> = of([]);
   public activities$: Observable<activitiesListRes.Result[]> = of([]);
   public projectsLoading$;
+  public activitiesLoading$;
 
   // tslint:disable-next-line:variable-name
   private _cacheLogTimePayload: TimesheetPayload;
@@ -90,6 +91,7 @@ export class LogTimePage implements OnInit {
     this.selectedTimeSheet = updateData;
     const lastLogPayload = updateData || this.cacheLogTimePayload;
     this.projectsLoading$ = this.store.pipe(select(selectProjectsLoader));
+    this.activitiesLoading$ = this.store.pipe(select(selectActivitiesLoader));
 
     this.timeSheetForm = this.formBuilder.group({
 

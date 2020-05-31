@@ -43,7 +43,10 @@
 
           <ion-item>
             <ion-label>Activity</ion-label>
-            <ion-select formControlName="activity_id" name="activity_id" placeholder="Select Activity">
+            <div *ngIf="activitiesLoading$ | async">
+              <ion-spinner color="primary" name="dots"></ion-spinner>
+            </div>
+            <ion-select *ngIf="!(activitiesLoading$ | async)" formControlName="activity_id" name="activity_id" placeholder="Select Activity">
               <ion-select-option *ngFor="let activity of activities$ | async" [value]="activity?.id">{{activity?.name}}</ion-select-option>
             </ion-select>
           </ion-item>
