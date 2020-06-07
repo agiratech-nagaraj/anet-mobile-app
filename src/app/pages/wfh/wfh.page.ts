@@ -1,19 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Observable, of} from 'rxjs';
+import {DatePipe} from '@angular/common';
+
+import {select, Store} from '@ngrx/store';
 
 import {NavController, ToastController} from '@ionic/angular';
 
-import {Observable, of} from 'rxjs';
 import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
-import {select, Store} from '@ngrx/store';
 import * as appStore from '../../store/reducers';
 import {selectProjectListState, selectProjectsLoader} from '../../store/projects/selectors/projects.selectors';
 import {AlertService} from '../../core/alert.service';
 import {ApiService} from '../../core/api.service';
 import {StorageKeys, StorageService} from '../../storage';
 import { WorkFromHome} from '../../core/models/http/payloads/wfh.payload';
-import {DatePipe} from '@angular/common';
 import * as wfhList from '../../core/models/http/responses/wfh-list.response';
 import * as WfhRecordResponse from '../../core/models/http/responses/wfh-record.response';
 

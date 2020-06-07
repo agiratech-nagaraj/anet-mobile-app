@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
 import {DatePipe} from '@angular/common';
+import {Router} from '@angular/router';
 
 import {select, Store} from '@ngrx/store';
 
@@ -12,7 +13,6 @@ import {WorkFromHome} from '../../core/models/http/responses/wfh-list.response';
 import * as appStore from '../../store/reducers';
 import {selectsWFHListLoader, selectWFHListState} from '../../store/wfh/selectors/wfh.selectors';
 import {loadWFHs} from '../../store/wfh/actions/wfh.actions';
-import {Router} from '@angular/router';
 import * as WfhRecordResponse from '../../core/models/http/responses/wfh-record.response';
 
 @Component({

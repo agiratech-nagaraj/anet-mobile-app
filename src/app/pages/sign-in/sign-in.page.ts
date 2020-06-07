@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import swal from 'sweetalert2';
 
 import {IonInput, NavController} from '@ionic/angular';
 
