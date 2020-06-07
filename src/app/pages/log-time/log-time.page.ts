@@ -17,6 +17,7 @@ import * as activitiesListRes from '../../core/models/http/responses/activities-
 import {StorageKeys, StorageService} from '../../storage';
 import {TimesheetPayload} from '../../core/models/http/payloads/timesheet.payload';
 import {Timesheet} from '../../core/models/http/responses/timesheets.response';
+import {loadTimesheetss} from '../../store/timesheets/actions/timesheets.actions';
 
 @Component({
   selector: 'app-log-time',
@@ -33,8 +34,6 @@ export class LogTimePage implements OnInit {
       {type: 'required', message: 'Activity is required.'},
     ],
     billed_hours: [
-      {type: 'required', message: 'Billing Hours is required.'},
-      {type: 'pattern', message: 'Please enter a billing hours'}
     ],
     worked_hours: [
       {type: 'required', message: 'Working hours is required'},
@@ -108,10 +107,7 @@ export class LogTimePage implements OnInit {
         Validators.pattern('^([0-9]{1,2})$'),
       ])),
 
-      billed_hours: new FormControl(lastLogPayload?.billed_hours ?? '', Validators.compose([
-        Validators.required,
-        Validators.pattern('^([0-9]{1,2})$'),
-      ])),
+      billed_hours: new FormControl(lastLogPayload?.billed_hours ?? '', []),
 
       comment: new FormControl(lastLogPayload?.comment ?? '', Validators.compose([
         Validators.required,
@@ -154,8 +150,9 @@ export class LogTimePage implements OnInit {
       .subscribe(async (res) => {
         loaderRef.dismiss();
         if (res?.success) {
-          this.cacheLogTimePayload = this.timeSheetForm.value;
           await this.alertService.toastAlert('Added Successfully', 'Info');
+          this.cacheLogTimePayload = this.timeSheetForm.value;
+          this.loadTimeSheets();
         } else {
           const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
           this.alertService.toastAlert(message);
@@ -168,10 +165,11 @@ export class LogTimePage implements OnInit {
       .subscribe(async (res) => {
         loaderRef.dismiss();
         if (res?.success) {
+          await this.alertService.toastAlert(res?.message, 'Info');
           this.selectedTimeSheet = null;
           history.state.data = null;
           this.timeSheetForm.reset();
-          await this.alertService.toastAlert(res?.message, 'Info');
+          this.loadTimeSheets();
         } else {
           const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
           this.alertService.toastAlert(message);
@@ -195,4 +193,9 @@ export class LogTimePage implements OnInit {
     this.timeSheetForm.controls.worked_hours.setValue(this.selectedTimeSheet?.worked_hours);
 
   }
+
+  private loadTimeSheets() {
+    this.store.dispatch(loadTimesheetss({pageNo: 1, duration: 'this month'}));
+  }
+
 }

@@ -17,6 +17,7 @@ import {StorageKeys, StorageService} from '../../storage';
 import { WorkFromHome} from '../../core/models/http/payloads/wfh.payload';
 import * as wfhList from '../../core/models/http/responses/wfh-list.response';
 import * as WfhRecordResponse from '../../core/models/http/responses/wfh-record.response';
+import {loadWFHs} from '../../store/wfh/actions/wfh.actions';
 
 
 @Component({
@@ -155,8 +156,9 @@ export class WfhPage implements OnInit {
       .subscribe(async (res) => {
         loaderRef.dismiss();
         if (res?.success) {
-          this.cacheWFHPayload = this.wfhForm?.value;
           await this.alertService.toastAlert('Added Successfully', 'Info');
+          this.cacheWFHPayload = this.wfhForm?.value;
+          this.reload();
         } else {
           const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
           this.alertService.toastAlert(message);
@@ -173,6 +175,7 @@ export class WfhPage implements OnInit {
           this.wfhForm.reset();
           this.selectedWFH = null;
           history.state.data = null;
+          this.reload();
         } else {
           const message = JSON.stringify(res?.errors ?? 'Something went wrong', null, 2);
           this.alertService.toastAlert(message);
@@ -193,6 +196,10 @@ export class WfhPage implements OnInit {
     this.wfhForm.controls.to_time.setValue(this.selectedWFH?.to_time);
     this.wfhForm.controls.reason.setValue(this.selectedWFH?.reason);
     this.wfhForm.controls.billable.setValue(this.selectedWFH?.billable?.toString());
+  }
+
+  private reload() {
+    this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true}));
   }
 
 }
