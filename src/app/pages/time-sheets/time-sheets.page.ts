@@ -132,11 +132,18 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
 
 
   private isTimeSheetApplicableForModify(selectedTimeSheet: Timesheet): boolean {
-    const today = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
-    const yesterday = this.datePipe.transform(new Date(new Date().setDate(new Date().getDate() - 1)), 'dd/MM/yyyy');
-    const dayBeforeYesterday = this.datePipe.transform(new Date(new Date().setDate(new Date().getDate() - 2)), 'dd/MM/yyyy');
+
+    const currentDate = new Date().getDate();
+    const currentDateIns = new Date();
+
+    const today = this.datePipe.transform(currentDateIns, 'dd/MM/yyyy');
+    const yesterday = this.datePipe.transform(currentDateIns.setDate(currentDate - 1), 'dd/MM/yyyy');
+    const dayBeforeYesterday = this.datePipe.transform(currentDateIns.setDate(currentDate - 2), 'dd/MM/yyyy');
+    const last3rdDay = this.datePipe.transform(currentDateIns.setDate(currentDate - 3), 'dd/MM/yyyy');
     const timeSheetDate = this.datePipe.transform(selectedTimeSheet?.date, 'dd/MM/yyyy');
-    return timeSheetDate == today || timeSheetDate == yesterday || timeSheetDate == dayBeforeYesterday;
+
+    return timeSheetDate === today || timeSheetDate === yesterday || timeSheetDate === dayBeforeYesterday || timeSheetDate === last3rdDay;
+
   }
 
   private reload() {
