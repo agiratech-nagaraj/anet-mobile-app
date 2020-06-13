@@ -75,3 +75,12 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+
+.them-bg {
+  background: var(--ion-color-primary) !important;
+  color: var(--ion-color-light) !important;
+}
+
+.them-color {
+  color: var(--ion-color-primary) !important;
+}

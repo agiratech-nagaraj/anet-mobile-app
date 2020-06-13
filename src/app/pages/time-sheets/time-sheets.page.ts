@@ -58,6 +58,7 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
   totalTimeSheets: number;
   isRefreshing = false;
   timeSheetsLoading$;
+  selectedMonth = 'this month';
 
   private unSubscribe = new Subject();
 
@@ -110,6 +111,11 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
 
   }
 
+  selectMonth(selectedMonth: string) {
+    this.selectedMonth = selectedMonth;
+    this.store.dispatch(loadTimesheetss({pageNo: 1, duration: selectedMonth}));
+  }
+
 
   loadMore(event) {
     // if (this.totalTimeSheets && this.pageNo > (this.totalTimeSheets / 10)) {
@@ -147,7 +153,7 @@ export class TimeSheetsPage implements OnInit, OnDestroy {
   }
 
   private reload() {
-    this.store.dispatch(loadTimesheetss({pageNo: 1, duration: 'this month'}));
+    this.store.dispatch(loadTimesheetss({pageNo: 1, duration: this.selectedMonth}));
     // this.infiniteScroll.disabled = false;
   }
 

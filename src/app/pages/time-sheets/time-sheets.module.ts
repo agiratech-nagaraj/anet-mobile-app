@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { TimeSheetsPage } from './time-sheets.page';
 import {SharedModule} from '../../shared/shared.module';
+import {MatMenuModule} from "@angular/material/menu";
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    SharedModule
+    SharedModule,
+    MatMenuModule,
   ],
   declarations: [TimeSheetsPage]
 })

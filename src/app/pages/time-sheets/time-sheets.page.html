@@ -5,7 +5,20 @@
         <ion-img src="assets/menu.svg"></ion-img>
       </ion-menu-toggle>
     </ion-buttons>
-    <ion-title>Time Sheets</ion-title>
+    <ion-title class="ion-text-center">Time Sheets</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [matMenuTriggerFor]="tsMenu">
+        <ion-icon src="assets/icon/more_vert.svg"></ion-icon>
+      </ion-button>
+      <mat-menu #tsMenu="matMenu">
+        <button [class.them-bg]="selectedMonth =='this month'" (click)="selectMonth('this month')" mat-menu-item>
+          {{ 'This Month' | uppercase}}
+        </button>
+        <button [class.them-bg]="selectedMonth =='prev month'" (click)="selectMonth('prev month')" mat-menu-item>
+          {{ 'Previous Month' | uppercase}}
+        </button>
+      </mat-menu>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -22,7 +35,7 @@
 
   <!-- Skeleton screen -->
   <section *ngIf="(timeSheetsLoading$ | async)">
-     <shared-skeleton-list></shared-skeleton-list>
+    <shared-skeleton-list></shared-skeleton-list>
   </section>
 
   <section *ngIf="!(timeSheetsLoading$ | async)">
