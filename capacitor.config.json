@@ -1,6 +1,6 @@
 {
   "appId": "com.agiratect.anet",
-  "appName": "Anet",
+  "appName": "A-Net",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
