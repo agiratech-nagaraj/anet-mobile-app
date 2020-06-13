@@ -15,7 +15,7 @@
     ionic cap run android --prod
   
 ## Download
-  APK available in this repo `anet-v.0.1-beta-2.apk`
+  APK available in this repo `anet-v.0.1-beta-2.1.apk`
 
 ### Screenshots
 
