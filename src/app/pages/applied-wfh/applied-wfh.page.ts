@@ -55,6 +55,7 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
   wfhListLoading$;
 
   private unSubscribe = new Subject();
+  selectedMonth = 'this month';
 
 
   constructor(
@@ -101,6 +102,15 @@ export class AppliedWfhPage implements OnInit, OnDestroy {
     this.selectedWFH = selectedWFH;
     await actionSheet.present();
 
+  }
+
+  selectMonth(thisMonth: string) {
+    this.selectedMonth = thisMonth;
+    if (thisMonth === 'this month') {
+      this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true, lastMonth: false }));
+    } else if (thisMonth === 'prev month') {
+      this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: false, lastMonth: true}));
+    }
   }
 
   loadMore(event) {

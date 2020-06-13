@@ -5,7 +5,20 @@
         <ion-img src="assets/menu.svg"></ion-img>
       </ion-menu-toggle>
     </ion-buttons>
-    <ion-title>Applied WFH</ion-title>
+    <ion-title class="ion-text-center">Applied WFH</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [matMenuTriggerFor]="wfhMenu">
+        <ion-icon src="assets/icon/more_vert.svg"></ion-icon>
+      </ion-button>
+      <mat-menu #wfhMenu="matMenu">
+        <button [class.them-bg]="selectedMonth =='this month'" (click)="selectMonth('this month')" mat-menu-item>
+          {{ 'This Month' | uppercase}}
+        </button>
+        <button [class.them-bg]="selectedMonth =='prev month'" (click)="selectMonth('prev month')" mat-menu-item>
+          {{ 'Previous Month' | uppercase}}
+        </button>
+      </mat-menu>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

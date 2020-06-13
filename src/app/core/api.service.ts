@@ -87,8 +87,14 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('Add WFH', null)));
   }
 
-  getWFHList(pageNo = 1, thisMonth = true): Observable<WFHListResponse> {
-    const url = `anet-api/work_from_homes?self=true&filter=true&page_no=${pageNo}&this_month=${thisMonth}`;
+  getWFHList(pageNo = 1, thisMonth = true, lastMonth = false): Observable<WFHListResponse> {
+    let url = `anet-api/work_from_homes?self=true&filter=true&page_no=${pageNo}`;
+    if (thisMonth) {
+      url = `${url}&this_month=${thisMonth}`;
+    }
+    if (lastMonth) {
+      url = `${url}&last_month=${lastMonth}`;
+    }
     return this.http.get<WFHListResponse>(url)
       .pipe(catchError(this.errorHandler('WFH List', null)));
   }

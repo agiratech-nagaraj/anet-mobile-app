@@ -16,7 +16,7 @@ export class WFHEffects {
 
       ofType(WFHActions.loadWFHs),
       concatMap((action) =>
-        this.apiService.getWFHList(action.pageNo, action.thisMonth).pipe(
+        this.apiService.getWFHList(action.pageNo, action.thisMonth, action.lastMonth).pipe(
           map(data => WFHActions.loadWFHsSuccess({ data })),
           catchError(error => of(WFHActions.loadWFHsFailure({ error }))))
       )

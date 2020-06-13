@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 
 export const loadWFHs = createAction(
   '[WFH] Load WFHs',
-  props<{pageNo: number, thisMonth: boolean}>()
+  props<{pageNo: number, thisMonth?: boolean, lastMonth?: boolean}>()
 );
 
 export const loadWFHsSuccess = createAction(
