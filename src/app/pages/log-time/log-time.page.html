@@ -128,9 +128,15 @@
           </div>
           <!-- for closeing the erro message -->
 
-          <ion-row>
+          <ion-row class="ion-align-items-center ion-justify-content-center">
 
             <ion-col>
+              <ion-button class="animated zoomInUp ion-float-right ion-margin-top delay-1000s" size="default"
+                          shape="round" (click)="reset()">
+                Reset
+              </ion-button>
+            </ion-col>
+            <ion-col style="display: flex">
               <ion-button class="animated zoomInUp ion-float-right ion-margin-top delay-1000s" size="default" [disabled]="!timeSheetForm.valid"
                           shape="round" (click)="submit()">
                 Submit

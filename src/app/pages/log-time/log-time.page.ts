@@ -140,6 +140,10 @@ export class LogTimePage implements OnInit {
 
   }
 
+  reset() {
+    this.timeSheetForm.reset();
+  }
+
   private loadStates() {
     this.projects$ = this.store.pipe(select(selectProjectListState));
     this.activities$ = this.store.pipe(select(selectActivitiesListState));
