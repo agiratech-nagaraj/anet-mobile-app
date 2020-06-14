@@ -12,7 +12,7 @@
 
       <ion-list>
 
-        <section *ngIf="islogin; else noLogin">
+        <ng-container *ngIf="islogin; else noLogin">
 
           <div class="profile">
 
@@ -22,15 +22,26 @@
               <h4>
                 {{user?.name}}
               </h4>
-               <h6 style="color: rgba(0,0,0,0.67)">
-                  <small>EmpId: {{user?.emp_id}}</small>
-               </h6>
+              <h6 style="color: rgba(0,0,0,0.67)">
+                <small>EmpId: {{user?.emp_id}}</small>
+              </h6>
               <h6 style="color: rgba(0,0,0,0.67)">
                 <small>Email: {{user?.email}}</small>
               </h6>
             </div>
 
           </div>
+
+          <ion-item>
+            <ion-avatar item-start>
+              <img
+                src="https://thumbnailer.mixcloud.com/unsafe/160x160/profile/c/3/8/a/7305-4d74-4def-893d-ee6fccf64e05.jpg">
+            </ion-avatar>
+            <div class="ion-padding-start">
+              <h5 style="margin-bottom: 0">Appraiser</h5>
+              <h6 style="margin-top: 4px" class="txt-0-7">{{user.manager.name}}</h6>
+            </div>
+          </ion-item>
 
           <ion-item>
             <ion-button (click)="refresh()">
@@ -46,7 +57,7 @@
             </ion-button>
           </ion-item>
 
-        </section>
+        </ng-container>
 
         <ng-template #noLogin>
           <section>
