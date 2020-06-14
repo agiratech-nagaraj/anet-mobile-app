@@ -145,10 +145,16 @@ export class ApiService {
       .pipe(catchError(this.errorHandler('Delete Timesheet', null)));
   }
 
-  getChartsData(payload: { duration: string, activityId: string }): Observable<ChartsResponse> {
+  getChartsData(payload: { duration: string, projectId?: string, activityId?: string }): Observable<ChartsResponse> {
     const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
     const userId = user?.data?.id as number;
-    const url = `anet-api/charts/?&duration=${payload.duration}&user_id=${userId}&activity_id=${payload.activityId}`;
+    let url = `anet-api/charts/?&duration=${payload.duration}&user_id=${userId}`;
+    if (payload?.projectId) {
+      url = `${url}&project_id=${payload.projectId}`;
+    }
+    if (payload?.activityId) {
+      url = `${url}&activity_id=${payload.activityId}`;
+    }
     return this.http.get<ChartsResponse>(url)
       .pipe(catchError(this.errorHandler('Charts', null)));
   }

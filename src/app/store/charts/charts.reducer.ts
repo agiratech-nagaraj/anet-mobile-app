@@ -1,4 +1,4 @@
-import {createReducer, on} from '@ngrx/store';
+import {Action, createReducer, on} from '@ngrx/store';
 
 import * as ChartsActions from './charts.actions';
 import {ChartsResponse} from '../../core/models/http/responses/charts.response';
@@ -23,7 +23,7 @@ export const initialState: State = {
 export const reducer = createReducer(
   initialState,
   on(ChartsActions.initChartss, (state, action) => ({...state, data: action.data})),
-  on(ChartsActions.loadChartss, (state, action) => {
+  on(ChartsActions.loadChartss, (state, action: any) => {
     return {
       ...state,
       payload: action.payload,

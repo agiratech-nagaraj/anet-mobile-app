@@ -1,10 +1,82 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-toggle class="ion-margin-horizontal" autoHide="false">
+        <ion-img src="assets/menu.svg"></ion-img>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Charts</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [matMenuTriggerFor]="tsMenu">
+        <ion-icon src="assets/icons/more_vert.svg"></ion-icon>
+      </ion-button>
+      <mat-menu #tsMenu="matMenu">
+        <button [class.them-bg]="selectedMonth =='this month'" (click)="selectMonth('this month')" mat-menu-item>
+          {{ 'This Month' | uppercase}}
+        </button>
+        <button [class.them-bg]="selectedMonth =='prev month'" (click)="selectMonth('prev month')" mat-menu-item>
+          {{ 'Previous Month' | uppercase}}
+        </button>
+      </mat-menu>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
 
-  <ion-list-header>Current Month Details </ion-list-header>
-  <ion-card>
-    <ion-card-content>
-      <div id="date-vs-time" style="width:100%; height:400px;"></div>
-    </ion-card-content>
-  </ion-card>
+  <section class="ion-padding" *ngIf="!chartsData">
+    <ion-title class="ion-text-center" color="secondary">Sorry No data found</ion-title>
+  </section>
+
+  <section class="home-page-wrapper">
+
+    <ion-list-header class="txt-0-7">{{selectedMonth | uppercase}} STATUS</ion-list-header>
+    <ion-card>
+      <ion-row>
+
+        <ion-col size="4" class="ion-text-center">
+          <h5>
+            Total Hrs
+          </h5>
+          <ion-text color="secondary">
+            <h1>  {{chartsData?.total_hours}} </h1>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size="4" class="ion-text-center">
+          <h5>
+            Working Hrs
+          </h5>
+          <ion-text color="secondary">
+            <h1> {{workedHrs}} </h1>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size="4" class="ion-text-center">
+          <h5>
+            Billing Hrs
+          </h5>
+          <ion-text color="secondary">
+            <h1>  {{chartsData?.billed_hours}}</h1>
+          </ion-text>
+        </ion-col>
+
+      </ion-row>
+    </ion-card>
+
+    <ion-list-header class="txt-0-7">{{selectedMonth | uppercase}} SPENT TIME</ion-list-header>
+    <ion-card>
+      <ion-card-content>
+        <div id="date-vs-time" style="width:100%; height:400px;"></div>
+      </ion-card-content>
+    </ion-card>
+
+
+  </section>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/tabs">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>

@@ -20,7 +20,7 @@ export interface StackedBarData {
   stack: string;
 }
 
-export interface Result {
+export interface ChartsResult {
   duration: string[];
   total_hours: number;
   billed_hours: number;
@@ -32,5 +32,5 @@ export interface Result {
 
 export interface ChartsResponse {
   success: boolean;
-  result: Result;
+  result: ChartsResult;
 }
