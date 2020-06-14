@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {Router} from '@angular/router';
-import {tap} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 
 import {StorageKeys, StorageService} from '../../storage';
 import {AlertService} from '../alert.service';
@@ -44,10 +45,12 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(request).pipe(
-      tap((res: HttpEvent<HttpResponse<any>>) => {
-        if (res instanceof HttpResponse && res.status === 401) {
+      catchError((res) => {
+        // when session closed move to sign in page
+        if (res instanceof HttpErrorResponse && res.status === 401) {
           this.clearSessionState();
         }
+        return throwError(res);
       })
     );
 
