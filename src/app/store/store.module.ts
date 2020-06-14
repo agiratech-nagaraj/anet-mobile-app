@@ -18,7 +18,7 @@ import {environment} from '../../environments/environment';
         strictActionImmutability: true,
       }
     }),
-    !environment.production ? StoreDevtoolsModule.instrument() : []
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
   ]
 })
 export class AppStoreModule {

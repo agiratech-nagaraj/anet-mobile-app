@@ -9,6 +9,7 @@ import * as fromProjects from '../projects/reducers/projects.reducer';
 import * as fromUser from '../user/reducers/user.reducer';
 import * as fromTimesheets from '../timesheets/reducers/timesheets.reducer';
 import * as fromWFH from '../wfh/reducers/wfh.reducer';
+import * as fromCharts from '../charts/charts.reducer';
 
 
 export interface State {
@@ -17,6 +18,7 @@ export interface State {
   [fromUser.userFeatureKey]: fromUser.State;
   [fromTimesheets.timesheetsFeatureKey]: fromTimesheets.State;
   [fromWFH.wFHFeatureKey]: fromWFH.State;
+  [fromCharts.chartsFeatureKey]: fromCharts.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
@@ -26,6 +28,7 @@ export const reducers: ActionReducerMap<State> = {
   [fromUser.userFeatureKey]: fromUser.reducer,
   [fromTimesheets.timesheetsFeatureKey]: fromTimesheets.reducer,
   [fromWFH.wFHFeatureKey]: fromWFH.reducer,
+  [fromCharts.chartsFeatureKey]: fromCharts.reducer,
 };
 
 

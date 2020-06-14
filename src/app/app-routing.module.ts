@@ -36,6 +36,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/time-sheets/time-sheets.module').then(m => m.TimeSheetsPageModule),
     canLoad: [AuthGuardService],
   },
+  {
+    path: 'home',
+    canLoad: [AuthGuardService],
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+  },
 ];
 
 @NgModule({

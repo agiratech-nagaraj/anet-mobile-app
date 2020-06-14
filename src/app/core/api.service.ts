@@ -18,6 +18,7 @@ import {SignInResponse} from './models/http/responses/sign-in.response';
 import {AlertService} from './alert.service';
 import {TimesheetResponse} from './models/http/responses/timesheet.response';
 import {WfhRecordResponse} from './models/http/responses/wfh-record.response';
+import {ChartsResponse} from './models/http/responses/charts.response';
 
 @Injectable({
   providedIn: 'root'
@@ -142,6 +143,14 @@ export class ApiService {
     const url = `anet-api/timesheets/${id}`;
     return this.http.delete(url)
       .pipe(catchError(this.errorHandler('Delete Timesheet', null)));
+  }
+
+  getChartsData(payload: { duration: string, activityId: string }): Observable<ChartsResponse> {
+    const user: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
+    const userId = user?.data?.id as number;
+    const url = `anet-api/charts/?&duration=${payload.duration}&user_id=${userId}&activity_id=${payload.activityId}`;
+    return this.http.get<ChartsResponse>(url)
+      .pipe(catchError(this.errorHandler('Charts', null)));
   }
 
 }

@@ -19,6 +19,7 @@ import {ActivitesEffects} from './store/activites/effects/activites.effects';
 import {UserEffects} from './store/user/effects/user.effects';
 import {WFHEffects} from './store/wfh/effects/wfh.effects';
 import {TimesheetsEffects} from './store/timesheets/effects/timesheets.effects';
+import {ChartsEffects} from "./store/charts/charts.effects";
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {TimesheetsEffects} from './store/timesheets/effects/timesheets.effects';
       UserEffects,
       WFHEffects,
       TimesheetsEffects,
+      ChartsEffects,
     ]),
     ServiceWorkerModule.register('ngsw-worker.js', {  enabled: false, registrationStrategy: 'registerImmediately' }),
   ],
