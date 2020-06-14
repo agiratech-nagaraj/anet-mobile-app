@@ -175,7 +175,7 @@ export class HomePage implements OnInit, OnDestroy {
         text: 'User Vs Projects'
       },
       subtitle: {
-        text: 'Total Hours: ' + this.mockData.result.total_hours
+        text: 'Total Hours: ' + this.chartsData.total_hours
       },
       yAxis: {
         title: {
