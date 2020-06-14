@@ -22,7 +22,7 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(ChartsActions.initChartss, (state, action) => ({data: action.data})),
+  on(ChartsActions.initChartss, (state, action) => ({...state, data: action.data})),
   on(ChartsActions.loadChartss, (state, action) => {
     return {
       ...state,
