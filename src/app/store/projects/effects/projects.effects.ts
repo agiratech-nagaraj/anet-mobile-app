@@ -4,7 +4,7 @@ import {catchError, map, concatMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 
 import * as ProjectsActions from '../actions/projects.actions';
-import {ApiService} from '../../../core/api.service';
+import {ApiService} from '../../../core/providers/api.service';
 
 
 @Injectable()

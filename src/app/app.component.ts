@@ -6,15 +6,15 @@ import {Platform} from '@ionic/angular';
 import {AndroidFullScreen} from '@ionic-native/android-full-screen/ngx';
 
 import * as appStore from './store/reducers';
-import {ApiService} from './core/api.service';
-import {AlertService} from './core/alert.service';
+import {ApiService} from './core/providers/api.service';
+import {AlertService} from './core/providers/alert.service';
 import {selectUserState} from './store/user/selectors/user.selectors';
 import { loadUsers} from './store/user/actions/user.actions';
 import {StorageKeys, StorageService} from './storage';
 import {SignInResponse, User} from './core/models/http/responses/sign-in.response';
 import { loadWFHs} from './store/wfh/actions/wfh.actions';
 import { loadTimesheetss} from './store/timesheets/actions/timesheets.actions';
-import {AuthService} from './core/auth.service';
+import {AuthService} from './core/providers/auth.service';
 import {initProjectss, loadProjectss} from './store/projects/actions/projects.actions';
 import {initActivitess, loadActivitess} from './store/activites/actions/activites.actions';
 import {environment} from '../environments/environment';
@@ -22,6 +22,7 @@ import {environment} from '../environments/environment';
 import {
   Plugins,
 } from '@capacitor/core';
+import {NotificationService} from "./core/providers/notification.service";
 
 const { StatusBar, SplashScreen } = Plugins;
 
@@ -43,7 +44,8 @@ export class AppComponent {
     private api: ApiService,
     private alertService: AlertService,
     public androidFullScreen: AndroidFullScreen,
-    private authService: AuthService
+    private authService: AuthService,
+    private notification: NotificationService
   ) {
     this.initializeApp();
     const userData: SignInResponse = StorageService.instance.getItem(StorageKeys.userData, true);
@@ -57,6 +59,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       StatusBar?.setBackgroundColor?.({ color: '#3c8dbc'});
       SplashScreen?.hide?.();
+      this.notification.checkPermissionAndRegister();
     });
   }
 
@@ -122,6 +125,10 @@ export class AppComponent {
         this.androidFullScreen.immersiveMode();
       })
       .catch(err => console.log(err));
+  }
+
+  private async registerLocalNotification(){
+
   }
 
 }

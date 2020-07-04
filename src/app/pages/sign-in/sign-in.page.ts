@@ -7,7 +7,7 @@ import {IonInput, NavController} from '@ionic/angular';
 
 import {Store} from '@ngrx/store';
 
-import {ApiService} from '../../core/api.service';
+import {ApiService} from '../../core/providers/api.service';
 import {SignInResponse} from '../../core/models/http/responses/sign-in.response';
 import {StorageKeys, StorageService} from '../../storage';
 import {Authentication} from '../../core/models/authentication';
@@ -15,7 +15,7 @@ import * as appStore from '../../store/reducers/index';
 import {loadProjectss} from '../../store/projects/actions/projects.actions';
 import {loadActivitess} from '../../store/activites/actions/activites.actions';
 import {loadUsers} from '../../store/user/actions/user.actions';
-import {AlertService} from '../../core/alert.service';
+import {AlertService} from '../../core/providers/alert.service';
 
 @Component({
   selector: 'app-sign-in',

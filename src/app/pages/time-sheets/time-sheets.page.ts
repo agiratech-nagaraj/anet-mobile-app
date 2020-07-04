@@ -8,8 +8,8 @@ import {ActionSheetController} from '@ionic/angular';
 
 import {select, Store} from '@ngrx/store';
 
-import {ApiService} from '../../core/api.service';
-import {AlertService} from '../../core/alert.service';
+import {ApiService} from '../../core/providers/api.service';
+import {AlertService} from '../../core/providers/alert.service';
 import {Timesheet} from '../../core/models/http/responses/timesheets.response';
 import * as appStore from '../../store/reducers';
 import {

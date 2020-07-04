@@ -4,7 +4,7 @@ import { catchError, map, concatMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import * as WFHActions from '../actions/wfh.actions';
-import {ApiService} from '../../../core/api.service';
+import {ApiService} from '../../../core/providers/api.service';
 
 
 

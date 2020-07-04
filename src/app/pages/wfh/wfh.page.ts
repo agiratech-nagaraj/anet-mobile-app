@@ -11,8 +11,8 @@ import {NavController, ToastController} from '@ionic/angular';
 import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
 import * as appStore from '../../store/reducers';
 import {selectProjectListState, selectProjectsLoader} from '../../store/projects/selectors/projects.selectors';
-import {AlertService} from '../../core/alert.service';
-import {ApiService} from '../../core/api.service';
+import {AlertService} from '../../core/providers/alert.service';
+import {ApiService} from '../../core/providers/api.service';
 import {StorageKeys, StorageService} from '../../storage';
 import { WorkFromHome} from '../../core/models/http/payloads/wfh.payload';
 import * as wfhList from '../../core/models/http/responses/wfh-list.response';
@@ -79,7 +79,6 @@ export class WfhPage implements OnInit {
     private alertService: AlertService,
     private apiService: ApiService,
     private datePipe: DatePipe,
-    private route: ActivatedRoute
   ) {
 
   }

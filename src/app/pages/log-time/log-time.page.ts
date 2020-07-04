@@ -7,8 +7,8 @@ import {select, Store} from '@ngrx/store';
 
 import {NavController, ToastController} from '@ionic/angular';
 
-import {AlertService} from '../../core/alert.service';
-import {ApiService} from '../../core/api.service';
+import {AlertService} from '../../core/providers/alert.service';
+import {ApiService} from '../../core/providers/api.service';
 import * as appStore from '../../store/reducers';
 import {selectActivitiesListState, selectActivitiesLoader} from '../../store/activites/selectors/activites.selectors';
 import {selectProjectListState, selectProjectsLoader} from '../../store/projects/selectors/projects.selectors';

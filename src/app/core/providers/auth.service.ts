@@ -3,14 +3,14 @@ import {Router} from '@angular/router';
 
 import {Store} from '@ngrx/store';
 
-import {clearTimesheets} from '../store/timesheets/actions/timesheets.actions';
-import {clearWFH} from '../store/wfh/actions/wfh.actions';
+import {clearTimesheets} from '../../store/timesheets/actions/timesheets.actions';
+import {clearWFH} from '../../store/wfh/actions/wfh.actions';
 import {AlertService} from './alert.service';
-import {clearActivities} from '../store/activites/actions/activites.actions';
-import {StorageKeys, StorageService} from '../storage';
-import {clearProjects} from '../store/projects/actions/projects.actions';
-import {clearUsers} from '../store/user/actions/user.actions';
-import * as appStore from '../store/reducers';
+import {clearActivities} from '../../store/activites/actions/activites.actions';
+import {StorageKeys, StorageService} from '../../storage';
+import {clearProjects} from '../../store/projects/actions/projects.actions';
+import {clearUsers} from '../../store/user/actions/user.actions';
+import * as appStore from '../../store/reducers';
 
 
 @Injectable({

@@ -11,15 +11,15 @@ export class StorageService {
 
   }
 
-  getItem(key, isJSONTYPE = false) {
+  getItem<T extends any>(key, isJSONTYPE = false): T {
     const data = this.localStorage.getItem(key);
     if (isJSONTYPE) {
       try {
         if (!!data) {
-          return JSON.parse(data);
+          return JSON.parse(data) as T;
         }
       } catch (e) {
-        return false;
+        return false as T;
       }
     }
     return this.localStorage.getItem(key);

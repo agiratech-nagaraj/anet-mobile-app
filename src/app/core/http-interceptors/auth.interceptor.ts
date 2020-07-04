@@ -5,15 +5,14 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpResponse
 } from '@angular/common/http';
 import {Observable, of, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {catchError, tap} from 'rxjs/operators';
 
 import {StorageKeys, StorageService} from '../../storage';
-import {AlertService} from '../alert.service';
-import {AuthService} from '../auth.service';
+import {AlertService} from '../providers/alert.service';
+import {AuthService} from '../providers/auth.service';
 
 @Injectable({
   providedIn: 'root'

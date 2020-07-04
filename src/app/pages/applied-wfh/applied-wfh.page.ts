@@ -7,8 +7,8 @@ import {select, Store} from '@ngrx/store';
 
 import {ActionSheetController} from '@ionic/angular';
 
-import {ApiService} from '../../core/api.service';
-import {AlertService} from '../../core/alert.service';
+import {ApiService} from '../../core/providers/api.service';
+import {AlertService} from '../../core/providers/alert.service';
 import {WorkFromHome} from '../../core/models/http/responses/wfh-list.response';
 import * as appStore from '../../store/reducers';
 import {selectsWFHListLoader, selectWFHListState} from '../../store/wfh/selectors/wfh.selectors';

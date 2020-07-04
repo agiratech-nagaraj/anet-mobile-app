@@ -4,21 +4,21 @@ import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 
 
-import {SignInPayload} from './models/http/payloads/sign-in.payload';
-import {SignOutResponse} from './models/http/responses/sign-out.response';
-import {ActivitiesListResponse} from './models/http/responses/activities-list.response';
-import {ProjectsListResponse} from './models/http/responses/projects-list.response';
-import {TimesheetPayload} from './models/http/payloads/timesheet.payload';
-import {TimesheetsResponse} from './models/http/responses/timesheets.response';
-import {WorkFromHome} from './models/http/payloads/wfh.payload';
-import {WFHResponse} from './models/http/responses/wfh.response';
-import {WFHListResponse} from './models/http/responses/wfh-list.response';
-import {StorageKeys, StorageService} from '../storage';
-import {SignInResponse} from './models/http/responses/sign-in.response';
+import {SignInPayload} from '../models/http/payloads/sign-in.payload';
+import {SignOutResponse} from '../models/http/responses/sign-out.response';
+import {ActivitiesListResponse} from '../models/http/responses/activities-list.response';
+import {ProjectsListResponse} from '../models/http/responses/projects-list.response';
+import {TimesheetPayload} from '../models/http/payloads/timesheet.payload';
+import {TimesheetsResponse} from '../models/http/responses/timesheets.response';
+import {WorkFromHome} from '../models/http/payloads/wfh.payload';
+import {WFHResponse} from '../models/http/responses/wfh.response';
+import {WFHListResponse} from '../models/http/responses/wfh-list.response';
+import {StorageKeys, StorageService} from '../../storage';
+import {SignInResponse} from '../models/http/responses/sign-in.response';
 import {AlertService} from './alert.service';
-import {TimesheetResponse} from './models/http/responses/timesheet.response';
-import {WfhRecordResponse} from './models/http/responses/wfh-record.response';
-import {ChartsResponse} from './models/http/responses/charts.response';
+import {TimesheetResponse} from '../models/http/responses/timesheet.response';
+import {WfhRecordResponse} from '../models/http/responses/wfh-record.response';
+import {ChartsResponse} from '../models/http/responses/charts.response';
 
 @Injectable({
   providedIn: 'root'

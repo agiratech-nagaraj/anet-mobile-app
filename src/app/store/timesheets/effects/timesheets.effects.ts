@@ -4,7 +4,7 @@ import { catchError, map, concatMap } from 'rxjs/operators';
 import { EMPTY, of } from 'rxjs';
 
 import * as TimesheetsActions from '../actions/timesheets.actions';
-import {ApiService} from '../../../core/api.service';
+import {ApiService} from '../../../core/providers/api.service';
 
 
 
