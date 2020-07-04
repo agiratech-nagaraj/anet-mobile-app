@@ -99,7 +99,7 @@ export class NotificationService {
   }
 
   private handleWFHResponse(response) {
-    if (response) {
+    if (response?.success) {
       this.notify({text: 'SUCCESS', title: 'Applied work from home'});
     } else {
       this.notify({text: 'FAILURE', title: 'Applied work from home'});
