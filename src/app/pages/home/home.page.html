@@ -5,7 +5,7 @@
         <ion-img src="assets/menu.svg"></ion-img>
       </ion-menu-toggle>
     </ion-buttons>
-    <ion-title class="ion-text-center">Charts</ion-title>
+    <ion-title class="ion-text-center">Dashboard</ion-title>
     <ion-buttons slot="end">
       <ion-button [matMenuTriggerFor]="tsMenu">
         <ion-icon src="assets/icons/more_vert.svg"></ion-icon>
@@ -21,24 +21,23 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
+  <section *ngIf="!chartsData" class="home-page-wrapper">
+    <ion-list-header>
+      <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+    </ion-list-header>
 
-  <section class="ion-padding" *ngIf="!chartsData">
-    <ion-title class="ion-text-center" color="secondary">Sorry No data found</ion-title>
-  </section>
-
-  <section class="home-page-wrapper">
-
-    <ion-list-header class="txt-0-7">{{selectedMonth | uppercase}} STATUS</ion-list-header>
     <ion-card>
       <ion-row>
-
         <ion-col size="4" class="ion-text-center">
           <h5>
             Total Hrs
           </h5>
           <ion-text color="secondary">
-            <h1>  {{chartsData?.total_hours}} </h1>
+            <h1 style="display: flex;align-items: center;justify-content: center;">
+              <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+            </h1>
           </ion-text>
         </ion-col>
 
@@ -47,7 +46,9 @@
             Working Hrs
           </h5>
           <ion-text color="secondary">
-            <h1> {{workedHrs}} </h1>
+            <h1 style="display: flex;align-items: center;justify-content: center;">
+              <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+            </h1>
           </ion-text>
         </ion-col>
 
@@ -56,28 +57,74 @@
             Billing Hrs
           </h5>
           <ion-text color="secondary">
-            <h1>  {{chartsData?.billed_hours}}</h1>
+            <h1 style="display: flex;align-items: center;justify-content: center;">
+              <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+            </h1>
           </ion-text>
         </ion-col>
-
       </ion-row>
     </ion-card>
 
-    <ion-list-header class="txt-0-7">{{selectedMonth | uppercase}} SPENT TIME</ion-list-header>
+    <ion-list-header>
+      <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+    </ion-list-header>
+
+  </section>
+
+  <section class="home-page-wrapper">
+
+    <ng-container *ngIf="chartsData">
+      <ion-list-header class="txt-0-7">{{selectedMonth | uppercase}} STATUS</ion-list-header>
+      <ion-card>
+        <ion-row>
+
+          <ion-col size="4" class="ion-text-center">
+            <h5>
+              Total Hrs
+            </h5>
+            <ion-text color="secondary">
+              <h1>  {{chartsData?.total_hours}} </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="4" class="ion-text-center">
+            <h5>
+              Working Hrs
+            </h5>
+            <ion-text color="secondary">
+              <h1> {{workedHrs}} </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="4" class="ion-text-center">
+            <h5>
+              Billing Hrs
+            </h5>
+            <ion-text color="secondary">
+              <h1>  {{chartsData?.billed_hours}}</h1>
+            </ion-text>
+          </ion-col>
+
+        </ion-row>
+      </ion-card>
+      <ion-list-header class="txt-0-7">{{selectedMonth | uppercase}} SPENT TIME</ion-list-header>
+    </ng-container>
+
     <ion-card>
+      <ion-card-content *ngIf="!chartsData">
+        <ion-skeleton-text style="width: 100%;height: 270px"></ion-skeleton-text>
+      </ion-card-content>
       <ion-card-content>
         <div id="date-vs-time" style="width:100%; height:400px;"></div>
       </ion-card-content>
     </ion-card>
 
-    <ion-list-header class="txt-0-7">{{selectedMonth | uppercase}} SPENT TIME FOR PROJECTS </ion-list-header>
+    <ion-list-header class="txt-0-7">{{selectedMonth | uppercase}} SPENT TIME FOR PROJECTS</ion-list-header>
     <ion-card>
       <ion-card-content>
         <div id="time-vs-projects" style="width:100%; height:400px;"></div>
       </ion-card-content>
     </ion-card>
-
-
   </section>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
