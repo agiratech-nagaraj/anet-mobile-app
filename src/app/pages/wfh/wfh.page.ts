@@ -7,6 +7,7 @@ import {DatePipe} from '@angular/common';
 import {select, Store} from '@ngrx/store';
 
 import {NavController, ToastController} from '@ionic/angular';
+import {SpeechRecognition} from '@ionic-native/speech-recognition/ngx';
 
 import * as projectsListRes from '../../core/models/http/responses/projects-list.response';
 import * as appStore from '../../store/reducers';
@@ -27,7 +28,7 @@ import {loadWFHs} from '../../store/wfh/actions/wfh.actions';
 })
 export class WfhPage implements OnInit {
 
-
+  isRecording = true;
   errorMessages = {
     project_id: [
       {type: 'required', message: 'Project is required.'},
@@ -79,6 +80,7 @@ export class WfhPage implements OnInit {
     private alertService: AlertService,
     private apiService: ApiService,
     private datePipe: DatePipe,
+    private speechRecognition: SpeechRecognition,
   ) {
 
   }
@@ -199,6 +201,44 @@ export class WfhPage implements OnInit {
 
   private reload() {
     this.store.dispatch(loadWFHs({pageNo: 1, thisMonth: true}));
+  }
+
+  stopSpeechListener($event: MouseEvent) {
+    this.isRecording = true;
+    this.speechRecognition.stopListening();
+  }
+
+  async startSpeechListener($event: MouseEvent) {
+
+    const available = await this.speechRecognition.isRecognitionAvailable();
+    if (!available) {
+      this.alertService.toastAlert('No platform supprot');
+      return;
+    }
+
+    const hasPermission = await this.speechRecognition.hasPermission();
+    if (hasPermission) {
+      this.listenSpeechAPI();
+    } else {
+      this.speechRecognition.requestPermission().then(this.listenSpeechAPI.bind(this));
+    }
+  }
+
+  private listenSpeechAPI() {
+    this.isRecording = false;
+    setTimeout(()=> this.isRecording = true, 15000) // max time listening
+    this.speechRecognition.startListening({
+      language: 'en-IN',
+      prompt: 'Say Reason',
+      showPopup: false,
+      showPartial: false
+    }).subscribe(matches => {
+      this.isRecording = true;
+      if (Array.isArray(matches) && matches.length > 0) {
+        const currentVal = this.wfhForm.controls.reason.value;
+        this.wfhForm.controls.reason.setValue(currentVal+ ' '+ matches[0] ?? '');
+      }
+    });
   }
 
 }

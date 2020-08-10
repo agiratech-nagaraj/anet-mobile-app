@@ -9,6 +9,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import {AndroidFullScreen} from '@ionic-native/android-full-screen/ngx';
 import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
+import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -47,6 +48,7 @@ import {ChartsEffects} from './store/charts/charts.effects';
     AndroidFullScreen,
     DatePipe,
     LocalNotifications,
+    SpeechRecognition,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]

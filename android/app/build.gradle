@@ -6,8 +6,8 @@ android {
         applicationId "com.agiratect.anet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName '2'
+        versionCode 40
+        versionName '40'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

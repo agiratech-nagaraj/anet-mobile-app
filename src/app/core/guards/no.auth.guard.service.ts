@@ -22,7 +22,7 @@ export class NoAuthGuardService implements CanActivate, CanLoad {
   ): Observable<boolean> | Promise<boolean> | boolean {
     const isLoggined = !!StorageService.instance.getItem(StorageKeys.auth);
     if (isLoggined) {
-      this.router.navigateByUrl('/tabs/logtime');
+      this.router.navigateByUrl('/tabs/charts');
       return false;
     }
     return true;
@@ -31,7 +31,7 @@ export class NoAuthGuardService implements CanActivate, CanLoad {
   canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
     const isLoggined = !!StorageService.instance.getItem(StorageKeys.auth);
     if (isLoggined) {
-      this.router.navigateByUrl('/tabs/logtime');
+      this.router.navigateByUrl('/tabs/charts');
       return false;
     }
     return true;

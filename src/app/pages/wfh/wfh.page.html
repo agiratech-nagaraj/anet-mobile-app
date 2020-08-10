@@ -5,7 +5,13 @@
             <ion-img src="assets/menu.svg"></ion-img>
          </ion-menu-toggle>
       </ion-buttons>
-      <ion-title>Apply</ion-title>
+      <div style="display: flex;align-items: center;justify-content: space-between;padding-right: 16px">
+         <ion-title style="padding-left: 0;">Apply</ion-title>
+         <ion-icon (click)="startSpeechListener($event)" *ngIf="isRecording;else micOff" src="assets/icons/mic-outline.svg"></ion-icon>
+         <ng-template #micOff>
+           <ion-spinner (click)="stopSpeechListener($event)" color="secondary" name="dots"></ion-spinner>
+          </ng-template>
+       </div>
    </ion-toolbar>
 </ion-header>
 

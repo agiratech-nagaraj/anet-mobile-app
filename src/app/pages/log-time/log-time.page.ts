@@ -6,6 +6,7 @@ import {Observable, of} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 
 import {NavController, ToastController} from '@ionic/angular';
+import {SpeechRecognition} from '@ionic-native/speech-recognition/ngx';
 
 import {AlertService} from '../../core/providers/alert.service';
 import {ApiService} from '../../core/providers/api.service';
@@ -19,6 +20,7 @@ import {TimesheetPayload} from '../../core/models/http/payloads/timesheet.payloa
 import {Timesheet} from '../../core/models/http/responses/timesheets.response';
 import {loadTimesheetss} from '../../store/timesheets/actions/timesheets.actions';
 
+
 @Component({
   selector: 'app-log-time',
   templateUrl: './log-time.page.html',
@@ -26,6 +28,7 @@ import {loadTimesheetss} from '../../store/timesheets/actions/timesheets.actions
 })
 export class LogTimePage implements OnInit {
 
+  isRecording = true;
   errorMessages = {
     project_id: [
       {type: 'required', message: 'Project is required.'},
@@ -33,8 +36,7 @@ export class LogTimePage implements OnInit {
     activity_id: [
       {type: 'required', message: 'Activity is required.'},
     ],
-    billed_hours: [
-    ],
+    billed_hours: [],
     worked_hours: [
       {type: 'required', message: 'Working hours is required'},
       {type: 'pattern', message: 'Please enter a working hours'}
@@ -80,8 +82,8 @@ export class LogTimePage implements OnInit {
     private alertService: AlertService,
     private apiService: ApiService,
     private store: Store<appStore.State>,
+    private speechRecognition: SpeechRecognition,
   ) {
-
   }
 
   ngOnInit(): void {
@@ -98,7 +100,7 @@ export class LogTimePage implements OnInit {
         Validators.required
       ])),
 
-      activity_id: new FormControl(lastLogPayload?.activity?.id  || lastLogPayload?.activity_id || '', Validators.compose([
+      activity_id: new FormControl(lastLogPayload?.activity?.id || lastLogPayload?.activity_id || '', Validators.compose([
         Validators.required,
       ])),
 
@@ -202,4 +204,41 @@ export class LogTimePage implements OnInit {
     this.store.dispatch(loadTimesheetss({pageNo: 1, duration: 'this month'}));
   }
 
+  stopSpeechListener($event: MouseEvent) {
+    this.isRecording = true;
+    this.speechRecognition.stopListening();
+  }
+
+  async startSpeechListener($event: MouseEvent) {
+
+    const available = await this.speechRecognition.isRecognitionAvailable();
+    if (!available) {
+      this.alertService.toastAlert('No platform supprot');
+      return;
+    }
+
+    const hasPermission = await this.speechRecognition.hasPermission();
+    if (hasPermission) {
+      this.listenSpeechAPI();
+    } else {
+      this.speechRecognition.requestPermission().then(this.listenSpeechAPI.bind(this));
+    }
+  }
+
+  private listenSpeechAPI() {
+    this.isRecording = false;
+    setTimeout(()=> this.isRecording = true, 15000) // max time listening
+    this.speechRecognition.startListening({
+      language: 'en-IN',
+      prompt: 'Say Comments',
+      showPopup: false,
+      showPartial: false
+    }).subscribe(matches => {
+      this.isRecording = true;
+      if (Array.isArray(matches) && matches.length > 0) {
+        const currentVal = this.timeSheetForm.controls.comment.value;
+        this.timeSheetForm.controls.comment.setValue(currentVal+ ' '+ matches[0] ?? '');
+      }
+    });
+  }
 }
